@@ -1,20 +1,28 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <router-link class="nav-link" to="/ArenaDeBatalla">ArenaDeBatalla!!!!</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="/BusquedaArena">BusquedaArena!!!!</router-link>
+        </li>
+      </ul>
     </div>
-  </header>
 
-  <main>
-    <TheWelcome />
-  </main>
+  </nav>
+
+  <hr>
+
+
+  <div class="container">
+    <RouterView></RouterView>
+  </div>
 </template>
 
 <style scoped>
