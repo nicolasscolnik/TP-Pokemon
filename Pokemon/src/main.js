@@ -1,6 +1,29 @@
-import './assets/main.css'
-
 import { createApp } from 'vue'
-import App from './App.vue'
+import { createRouter, createWebHistory } from 'vue-router';
 
-createApp(App).mount('#app')
+import App from './App.vue'
+import ArenaDeBatalla from './components/ArenaDeBatalla.vue'
+import BusquedaArena from './components/BusquedaArena.vue'
+
+const routes = [
+    {
+        path: '/ArenaDeBatalla',
+        component: ArenaDeBatalla,
+    },
+
+    {
+        path: '/BusquedaArena',
+        component: BusquedaArena,
+    },
+
+];
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
+const app = createApp(App); // Cambia el componente inicial si es necesario
+
+app.use(router);
+app.mount('#app');
