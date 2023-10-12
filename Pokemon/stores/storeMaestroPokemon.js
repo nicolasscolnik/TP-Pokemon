@@ -1,15 +1,20 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useStoreMaestroPokemon = defineStore('maestroPokemon', {
-    state: () => (
-        { 
-            mensaje: 'Este es el mensaje predefinido', 
-            contador : 0
-        }),
-        actions: {
-            calcular(valor) {
-              this.contador = this.contador + valor
-            },
-          },
+  state: () => (
+    {
+      stamina: ref(0),
+      poderAtaque: ref(0),
+      poderCurar: ref(0),
+      esTurno1: ref(true),
+      swapDisponible: ref(0),
+      identidad: ref(false),
+    }),
+  actions: {
+    calcular(valor) {
+      this.contador = this.contador + valor
+    },
+  },
 
 })
