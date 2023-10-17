@@ -4,11 +4,7 @@ import { ref } from 'vue';
 const maestroPokemon = defineProps({
     nombre: ref(""),
     tuTurno: ref(true),
-    pokemons: {
-      type: Array,
-      default: () => [null, null, null, null]
-    },
-
+    pokemons: ref([])
 })
 
 const emit = defineEmits();
