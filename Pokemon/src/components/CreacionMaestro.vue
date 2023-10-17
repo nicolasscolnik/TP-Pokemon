@@ -3,10 +3,9 @@ import { ref } from 'vue'
 import MaestroPokemon from './MaestroPokemon.vue'
 
 const MaestroPokemon = ref({
-  nombre: "",
-  Pokemon1: "",
-  Pokemon2: "",
-  Pokemon3: ""
+  nombre: ref(""),
+  tuTurno: ref(true),
+  pokemons: ref([])
 });
 
 const guardarMaestro = () => {
@@ -18,8 +17,7 @@ const guardarMaestro = () => {
 </script>
 
 <template>
- 
- <div>
+  <div>
     <form @submit="guardarMaestro">
       <label for="nombre">Nombre:</label>
       <input type="text" v-model="MaestroPokemon.nombre" id="nombre" required>
@@ -38,9 +36,6 @@ const guardarMaestro = () => {
       <router-link to="/BusquedaArena">Elegir Arena</router-link>
     </form>
   </div>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
