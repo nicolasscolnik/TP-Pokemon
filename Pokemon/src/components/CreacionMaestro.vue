@@ -1,40 +1,52 @@
 <script setup>
 import { ref } from 'vue'
+import router from 'vue-router'
 import MaestroPokemon from './MaestroPokemon.vue'
 
-const MaestroPokemon = ref({
-  nombre: ref(""),
-  tuTurno: ref(true),
-  pokemons: ref([])
+const maestroPokemon = ref({
+  nombre: "",
+  tuTurno: true,
+  pokemons: []
 });
 
 const guardarMaestro = () => {
+  console.log(maestroPokemon.value);
 
-  console.log(MaestroPokemon.value);
+  cargarPokemones();
+};
 
-  router.push('/BusquedaArena');
+const cargarPokemones = async () => {
+  try {
+   
+    const api = await fetch('URL');  // METER URL API / el await espera a que este todo correcto para poder añadir los pokemones.
+    
+    if (!api.ok) {
+      throw new Error('No se pudo ingresar a la api');
+    }
+
+    const data = await api.json();
+    
+    maestroPokemon.pokemons = data; // Añade los Pokémon a la lista
+
+  } catch (error) {
+    console.error('Error al cargar los Pokémones:', error);
+  }
 };
 </script>
 
 <template>
+
   <div>
+
     <form @submit="guardarMaestro">
       <label for="nombre">Nombre:</label>
-      <input type="text" v-model="MaestroPokemon.nombre" id="nombre" required>
-
-      <label for="pokemon1">Pokemon1:</label>
-      <input type="text" v-model="MaestroPokemon.Pokemon1" id="pokemon1" required>
-
-      <label for="pokemon2">Pokemon2:</label>
-      <input type="text" v-model="MaestroPokemon.Pokemon2" id="pokemon1" required>
-
-      <label for="pokemon3">Pokemon3:</label>
-      <input type="text" v-model="MaestroPokemon.Pokemon3" id="pokemon1" required>
+      <input type="text" v-model="maestroPokemon.nombre" id="nombre" required>
 
       <button type="submit">Guardar</button>
 
       <router-link to="/BusquedaArena">Elegir Arena</router-link>
     </form>
+
   </div>
 </template>
 
