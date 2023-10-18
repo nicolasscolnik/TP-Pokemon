@@ -5,7 +5,9 @@ import { ref, defineEmits, onMounted } from 'vue';
 const maestroPokemon = defineProps({
   nombre: ref(""),
   tuTurno: ref(true),
-  pokemons: ref([])
+  pokemons: ref([]),
+  pokemonEnArena: ref({}),
+  numeroJugador: ref()
 })
 
 
@@ -16,9 +18,10 @@ const emitLastimar = () => {
   emit('lastimar');
 };
 
-const mandarArena = () => {
-  emit('horadeluchar')
+const mandarArena = (item) => {
+  emit('horadeluchar', item);
 }
+
 
 
 
@@ -26,36 +29,39 @@ const mandarArena = () => {
 
 <template>
   <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src={pokemon} alt="Imagen Pokemon">
+    <h3 class="card-title">{{ nombre }}</h3>
+    <img class="card-img-top" v-if="pokemonEnArena" :src="pokemonEnArena.foto" alt="No leyo la imagen">
     <div class="card-body">
-      <h5 class="card-title">{{ nombre }}</h5>
+      <h5 class="card-title">{{ pokemonEnArena.nombre }} -- {{ pokemonEnArena.vida }}</h5>
       <div>
         <label v-if="tuTurno">
           Tu turno: PELEA!!!
+          <div class="container">
+            <button @click="emitLastimar">Ataca!</button>
+            <button @click="emitCurar">Curate!</button>
+          </div>
         </label>
 
         <div>
-        <table>
+          <table>
             <thead>
-                <tr>
-                    <th>Pokemon</th>
-                    <th>Vida</th>
-                    <th>Ataque</th>
-                    <th>Acción</th>
-                </tr>
+              <tr>
+                <th>Pokemon</th>
+                <th>Vida</th>
+                <th>Ataque</th>
+              </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in pokemons" :key="index">
-                    <td>{{ item.pokemon.nombre }}</td>
-                    <td>{{ item.pokemon.vida }}</td>
-                    <td>{{ item.pokemon.foto }}</td>
-                    <td>
-                        <button @click="mandarArena(item)">Luchar</button>
-                    </td>
-                </tr>
+              <tr v-for="(item, index) in pokemons" :key="index">
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.vida }}</td>
+                <td>
+                  <button @click="mandarArena(item)">Elegir</button>
+                </td>
+              </tr>
             </tbody>
-        </table>
-    </div>
+          </table>
+        </div>
 
       </div>
     </div>

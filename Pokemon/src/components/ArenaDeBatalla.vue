@@ -1,17 +1,25 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import { useStoreMaestroPokemon } from '/stores/storeMaestroPokemon'
+import { useStoreArena } from '/stores/storeArena'
 import MaestroPokemon from './MaestroPokemon.vue'
 
-const store = useStoreMaestroPokemon()
 
 // const SWAPS_PERMITIDOS = 1;
+
+
 let pokemones1 = ref([]);
 let pokemones2 = ref([]);
+let pokemonEnArena1 = ref(null)
+let pokemonEnArena2 = ref(null)
 let esTurno1 = ref(true);
-let juegoON = ref(true);
-let jugador1 = ref(false);
-let jugador2 = ref(false);
+let jugador1 = ref(null);
+let jugador2 = ref(null);
+let datosPeleaActuales = ref({})
+let datosSala = ref({})
+const storeMaestro = useStoreMaestroPokemon();
+const storeArena = useStoreArena();
+
 
 const cambiaTurno = () => {
     esTurno1 = !esTurno1;
@@ -58,8 +66,7 @@ const curar = (id) => {
     cambiaTurno();
 }
 
-let datosPeleaActuales = ref({})
-let datosSala = ref({})
+
 
 const Actualizar = () => {
     let jugador1Local = datosPeleaActuales.value.luchador1;
@@ -94,10 +101,37 @@ const settingLocal = () => {
     // }
     // datosPeleaActuales.value.turno = ref(esTurno1);
     // console.log(datosPeleaActuales.value, esTurno1.value)
+    if (jugador1 != null) {
+        jugador2 = ref(storeMaestro);
+    } else {
+        jugador1 = ref(storeMaestro);
+    }
+
+    console.log("jugador1: " + jugador1 + "---" + "jugador2: " + jugador2)
+    // console.log(store.nombre)
+    console.log(jugador1.pokemons)
+    console.log(jugador2.value)
 }
 
+const enviarPokemonALaArena = (pokemon) => {  //me pasa pokemon = undefined
+    debugger
+    const pokeAAsignar = pokemon;
+    console.log(pokemon)
+    console.log(jugador2.pokemons)
+    if (jugador2) {
+        jugador2.pokemons.push(pokemonEnArena2.value);
+        pokemonEnArena2 = ref(jugador2.pokemons.pop(pokemon));
+    } else {
+        jugador1.pokemons.push(pokemonEnArena1.value);
+        pokemonEnArena1 = ref(jugador1.value.pokemons.pop(pokemon));
+    }
+    console.log(jugador2.pokemons)
+};
+
+
+
 onMounted(() => {
-    settingLocal()
+    settingLocal();
 })
 
 
@@ -105,15 +139,15 @@ onMounted(() => {
 <template>
     <h4>Turno j1: {{ jugador1 }}</h4>
     <h4>Turno j2: {{ jugador2 }}</h4>
-    <button type="button" class="btn btn-danger" @click="comienzaJuego">Comenzar!</button>
+    <!-- <button type="button" class="btn btn-danger" @click="comienzaJuego">Comenzar!</button> -->
     <hr>
     <hr>
-    <div class="luchadores-container" v-if="juegoON">
-        <MaestroPokemon @lastimar="atacar(1)" @curar="curar(1)" :pokemons="pokemones1" :esTurno1="!esTurno1"
-            :identidad="jugador1">
-            Luchador 2</MaestroPokemon>
-        <MaestroPokemon @lastimar="atacar(2)" @curar="curar(2)" :pokemons="pokemones2" :esTurno1="!esTurno1"
-            :identidad="jugador2">
+    <div class="luchadores-container">
+        <MaestroPokemon @horadeluchar="enviarPokemonALaArena()" @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash"
+            :pokemons="storeMaestro.pokemons" :tuTurno="esTurno1" :pokemonEnArena="storeMaestro.pokemonEnArena">
+            Luchador 1</MaestroPokemon>
+        <MaestroPokemon @horadeluchar="enviarPokemonALaArena()" @lastimar="atacar(2)" @curar="curar(2)" nombre="La otra"
+            :pokemons="storeMaestro.pokemons" :tuTurno="!esTurno1" :pokemonEnArena="storeMaestro.pokemonEnArena">
             Luchador 2</MaestroPokemon>
     </div>
 </template>
