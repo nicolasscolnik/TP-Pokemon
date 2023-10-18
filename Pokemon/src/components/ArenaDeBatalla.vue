@@ -113,14 +113,14 @@ const settingLocal = () => {
     console.log(jugador2.value)
 }
 
-const enviarPokemonALaArena = (pokemon) => {  //me pasa pokemon = undefined
+const enviarPokemonALaArena = (pokemon) => {  
     debugger
     const pokeAAsignar = pokemon;
     console.log(pokemon)
     console.log(jugador2.pokemons)
     if (jugador2) {
-        jugador2.pokemons.push(pokemonEnArena2.value);
-        pokemonEnArena2 = ref(jugador2.pokemons.pop(pokemon));
+        jugador2.value.pokemons.push(pokemonEnArena2.value); // me tira error al renderizar el atributo nombre(creo que del pokemon insertado)
+        pokemonEnArena2.value = jugador2.pokemons.pop(pokemon);
     } else {
         jugador1.pokemons.push(pokemonEnArena1.value);
         pokemonEnArena1 = ref(jugador1.value.pokemons.pop(pokemon));
@@ -143,10 +143,10 @@ onMounted(() => {
     <hr>
     <hr>
     <div class="luchadores-container">
-        <MaestroPokemon @horadeluchar="enviarPokemonALaArena()" @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash"
+        <MaestroPokemon @horadeluchar="enviarPokemonALaArena($event)" @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash"
             :pokemons="storeMaestro.pokemons" :tuTurno="esTurno1" :pokemonEnArena="storeMaestro.pokemonEnArena">
             Luchador 1</MaestroPokemon>
-        <MaestroPokemon @horadeluchar="enviarPokemonALaArena()" @lastimar="atacar(2)" @curar="curar(2)" nombre="La otra"
+        <MaestroPokemon @horadeluchar="enviarPokemonALaArena($event)" @lastimar="atacar(2)" @curar="curar(2)" nombre="La otra"
             :pokemons="storeMaestro.pokemons" :tuTurno="!esTurno1" :pokemonEnArena="storeMaestro.pokemonEnArena">
             Luchador 2</MaestroPokemon>
     </div>
