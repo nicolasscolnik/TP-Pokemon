@@ -87,30 +87,17 @@ const Actualizar = () => {
 
 
 const settingLocal = async () => {
-    // datosPeleaActuales.value.luchador1 = {
-    //     stamina1: ref(stamina1),
-    //     poderAtaque1: ref(poderAtaque1),
-    //     poderCurar1: ref(poderCurar1),
-    //     swap1: ref(swap1)
-    // }
-
-    // datosPeleaActuales.value.luchador2 = {
-    //     stamina2: ref(stamina2),
-    //     poderAtaque2: ref(poderAtaque2),
-    //     poderCurar2: ref(poderCurar2),
-    //     swap2: ref(swap2)
-    // }
-    // datosPeleaActuales.value.turno = ref(esTurno1);
-    // console.log(datosPeleaActuales.value, esTurno1.value)
     debugger
     if (storeMaestro.numeroJugador === 2) {
         jugador2 = ref(storeMaestro);
         pokemones2 = ref(storeMaestro.pokemons)
         pokemonEnArena2 = ref(storeMaestro.pokemonEnArena);
+        enviarPokemonALaArena(pokemones2.value[0]);
     } else {
         jugador1 = ref(storeMaestro);
         pokemonEnArena1 = ref(storeMaestro.pokemonEnArena);
         pokemones1 = ref(storeMaestro.pokemons)
+        enviarPokemonALaArena(pokemones1.value[0]);
     }
     mostrarComponentes.value = true; // Activa la visualización de los componentes
     console.log("jugador1: " + jugador1.value + "---" + "jugador2: " + jugador2.value)
@@ -153,15 +140,17 @@ const settingLocal = async () => {
 // };
 
 const enviarPokemonALaArena = (pokemon) => {
-    debugger;
+    debugger
     const pokeAAsignar = pokemon;
 
     if (jugador2.value) {
         // Si jugador2.value existe
         const indice = jugador2.value.pokemons.indexOf(pokeAAsignar);
         if (indice !== -1) {
-            jugador2.value.pokemons.splice(indice, 1); // Elimina el Pokémon del array de pokemons de jugador2
-            jugador2.value.pokemons.push(pokemonEnArena2.value);
+            jugador2.value.pokemons.splice(indice, 1);
+            if (jugador2.value.pokemons.length != 3) { // Elimina el Pokémon del array de pokemons de jugador2
+                jugador2.value.pokemons.push(pokemonEnArena2.value);
+            }
             pokemonEnArena2.value = pokeAAsignar; // Asigna el nuevo valor a pokemonEnArena2
         }
         console.log(jugador2.value.pokemons);
@@ -171,7 +160,9 @@ const enviarPokemonALaArena = (pokemon) => {
         const indice = jugador1.value.pokemons.indexOf(pokeAAsignar);
         if (indice !== -1) {
             jugador1.value.pokemons.splice(indice, 1); // Elimina el Pokémon del array de pokemons de jugador1
-            jugador1.value.pokemons.push(pokemonEnArena1.value);
+            if (jugador2.value.pokemons.length != 3) {
+                jugador1.value.pokemons.push(pokemonEnArena1.value);
+            }
             pokemonEnArena1.value = pokeAAsignar;
         }
     }
