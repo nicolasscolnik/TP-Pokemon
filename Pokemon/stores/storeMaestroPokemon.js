@@ -42,7 +42,7 @@ export const useStoreMaestroPokemon = defineStore('maestroPokemon', {
     tuTurno: ref(true),
     pokemons: ref([pokemonPrueba, pokemonPrueba2, pokemonPrueba3, pokemonPrueba4]),
     pokemonEnArena: ref(pokemonPrueba),
-    numeroJugador: ref(1)
+    numeroJugador: ref(2)
     }),
   actions: {
     // mandarArena : (pokemon) => {
