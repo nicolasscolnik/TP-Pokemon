@@ -18,6 +18,10 @@ const emitLastimar = () => {
   emit('lastimar');
 };
 
+const emitCurar = () => {
+  emit('curar');
+};
+
 const mandarArena = (item) => {
   emit('horadeluchar', item);
 }
