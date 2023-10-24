@@ -43,7 +43,7 @@ const mandarArena = (item) => {
         </label>
 
         <div>
-          <table>
+          <table class="table table-bordered">
             <thead>
               <tr>
                 <th>Pokemon</th>

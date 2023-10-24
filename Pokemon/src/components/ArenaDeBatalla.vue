@@ -5,8 +5,6 @@ import { useStoreArena } from '/stores/storeArena'
 import MaestroPokemon from './MaestroPokemon.vue'
 
 
-// const SWAPS_PERMITIDOS = 1;
-
 
 let pokemones1 = ref([]);
 let pokemones2 = ref([]);
@@ -87,7 +85,6 @@ const Actualizar = () => {
 
 
 const settingLocal = async () => {
-    debugger
     if (storeMaestro.numeroJugador === 2) {
         jugador2 = ref(storeMaestro);
         pokemones2 = ref(storeMaestro.pokemons)
@@ -106,41 +103,7 @@ const settingLocal = async () => {
     // console.log(jugador2.value)
 }
 
-// const enviarPokemonALaArena = (pokemon) => {
-//     debugger
-//     const pokeAAsignar = pokemon;
-//     // console.log(pokemon)
-//     // console.log(pokemonEnArena2)
-//     if (jugador2) {
-//         jugador2.value.pokemons.push(pokemonEnArena2.value);
-//         pokemonEnArena2.value = ref(jugador2.value.pokemons.pop(pokeAAsignar));
-//         console.log(jugador2.value.pokemons)
-//         console.log(pokemonEnArena2)
-//     } else {
-//         jugador1.pokemons.push(pokemonEnArena1.value);
-//         pokemonEnArena1 = ref(jugador1.value.pokemons.pop(pokemon));
-//     }
-// };
-
-// const enviarPokemonALaArena = (pokemon) => {
-//     debugger;
-//     const pokeAAsignar = pokemon;
-
-//     if (jugador2.value) {
-//         // Si jugador2.value existe
-//         jugador2.value.pokemons.push(pokemonEnArena2.value); // Agrega pokemonEnArena2 al array de pokemons de jugador2
-//         pokemonEnArena2.value = pokeAAsignar; // Asigna el nuevo valor a pokemonEnArena2
-//         console.log(jugador2.value.pokemons);
-//         console.log(pokemonEnArena2.value);
-//     } else {
-//         // Si jugador2.value no existe, asume que jugador1 es la referencia correcta
-//         jugador1.pokemons.push(pokemonEnArena1.value);
-//         pokemonEnArena1.value = pokeAAsignar;
-//     }
-// };
-
 const enviarPokemonALaArena = (pokemon) => {
-    debugger
     const pokeAAsignar = pokemon;
 
     if (jugador2.value) {
@@ -179,19 +142,10 @@ onMounted(() => {
 <template>
     <!-- <h4>Turno j1: {{ jugador1 }}</h4>
     <h4>Turno j2: {{ jugador2 }}</h4> -->
+    <h4>{{ esTurno1 }}</h4>
     <!-- <button type="button" class="btn btn-danger" @click="comienzaJuego">Comenzar!</button> -->
     <hr>
     <hr>
-    <!-- <div class="luchadores-container">
-        <MaestroPokemon @horadeluchar="enviarPokemonALaArena($event)" @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash"
-            :pokemons="storeMaestro.pokemons" :tuTurno="esTurno1" :pokemonEnArena="storeMaestro.pokemonEnArena">
-            Luchador 1</MaestroPokemon>
-        <MaestroPokemon @horadeluchar="enviarPokemonALaArena($event)" @lastimar="atacar(2)" @curar="curar(2)"
-            nombre="La otra" :pokemons="storeMaestro.pokemons" :tuTurno="!esTurno1"
-            :pokemonEnArena="storeMaestro.pokemonEnArena">
-            Luchador 2</MaestroPokemon>
-    </div> -->
-
     <div class="luchadores-container">
         <MaestroPokemon v-if="mostrarComponentes && jugador1" @horadeluchar="enviarPokemonALaArena($event)"
             @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash" :pokemons="pokemones1" :tuTurno="esTurno1"

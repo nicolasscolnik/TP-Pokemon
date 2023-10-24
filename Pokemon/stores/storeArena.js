@@ -9,9 +9,9 @@ export const useStoreArena = defineStore('arenaBatalla', {
             maestro2: ref({}),
         }),
     actions: {
-        calcular(valor) {
-            this.contador = this.contador + valor
-        },
+        // calcular(valor) {
+        //     this.contador = this.contador + valor
+        // },
     },
 
 })
