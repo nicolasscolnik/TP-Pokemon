@@ -13,7 +13,7 @@ let pokemonEnArena2 = ref(null)
 let esMiTurno = ref(true);
 let jugador1 = ref(null);
 let jugador2 = ref(null);
-let soyJugador = ref();
+let soyJugador = ref(0);
 let mostrarComponentes = ref(false);
 let datosPeleaActuales = ref({})
 let datosSala = ref({})
@@ -116,14 +116,13 @@ const settingLocal2 = () => {
     pokemonEnArena1 = ref(jugador1.value.pokemonEnArena);
     pokemonEnArena2 = ref(jugador2.value.pokemonEnArena);
     soyJugador = ref(storeMaestro.numeroJugador);
-    enviarPokemonALaArena2(pokemones2.value[0],2);
-    enviarPokemonALaArena2(pokemones1.value[0]),1;
-    
+    enviarPokemonALaArena2(pokemones2.value[0], 2);
+    enviarPokemonALaArena2(pokemones1.value[0]), 1;
+
     mostrarComponentes.value = true; // Activa la visualización de los componentes
 }
 
 const enviarPokemonALaArena2 = (pokemon, maestro) => {
-    debugger
     const pokeAAsignar = pokemon;
 
     if (maestro == 2) {
@@ -196,11 +195,11 @@ onMounted(() => {
     <div class="luchadores-container">
         <MaestroPokemon v-if="mostrarComponentes && jugador1" @horadeluchar="enviarPokemonALaArena($event)"
             @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash" :pokemons="pokemones1" :tuTurno="esMiTurno"
-            :pokemonEnArena="pokemonEnArena1">
+            :pokemonEnArena="pokemonEnArena1" :numeroJugador="1">
             Luchador 1</MaestroPokemon>
         <MaestroPokemon v-if="mostrarComponentes && jugador2" @horadeluchar="enviarPokemonALaArena($event)"
             @lastimar="atacar(2)" @curar="curar(2)" nombre="La otra" :pokemons="pokemones2" :tuTurno="!esMiTurno"
-            :pokemonEnArena="pokemonEnArena2">
+            :pokemonEnArena="pokemonEnArena2" :numeroJugador="2">
             Luchador 2</MaestroPokemon>
     </div>
 </template>

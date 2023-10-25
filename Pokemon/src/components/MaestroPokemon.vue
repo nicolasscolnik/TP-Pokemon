@@ -15,9 +15,10 @@ const maestroPokemon = defineProps({
 
 const checkDisabled = () => {
   debugger
-  return (numeroJugador.value == storeMaestro.numeroJugador)
+  return maestroPokemon.numeroJugador.value !== storeMaestro.numeroJugador.value;
 }
-// avisa de que esta usando el componente
+
+
 const emit = defineEmits();
 
 const emitLastimar = () => {
@@ -33,7 +34,7 @@ const mandarArena = (item) => {
 }
 
 
-
+console.log(checkDisabled())
 
 </script>
 
@@ -53,12 +54,12 @@ const mandarArena = (item) => {
         </label>
 
         <div>
-          <table class="table table-bordered" :disabled="checkDisabled()">
+          <table class="table table-bordered">
             <thead>
               <tr>
                 <th>Pokemon</th>
                 <th>Vida</th>
-                <th>Ataque</th>
+                <th>Arena</th>
               </tr>
             </thead>
             <tbody>
@@ -66,7 +67,7 @@ const mandarArena = (item) => {
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.vida }}</td>
                 <td>
-                  <button @click="mandarArena(item)">Elegir</button>
+                  <button @click="mandarArena(item)" v-if="checkDisabled()" >Elegir</button>
                 </td>
               </tr>
             </tbody>
