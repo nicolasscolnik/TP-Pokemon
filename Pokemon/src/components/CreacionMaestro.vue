@@ -25,7 +25,7 @@ const guardarMaestro = () => {
   storeMaestro.setter(maestroPokemon);
 };
 
-const cargarPokemones = async () => {
+const cargarPokemones = async () => { // no funca, hay que revisar. No asigna el atributo pokemon al maestroPokemon
   try {
    
     const listaPokemons = [];
