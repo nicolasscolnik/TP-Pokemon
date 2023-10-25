@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import router from 'vue-router'
 import MaestroPokemon from './MaestroPokemon.vue'
 
 const maestroPokemon = ref({
@@ -8,13 +7,6 @@ const maestroPokemon = ref({
   tuTurno: true,
   pokemons: []
 });
-
-function crearPokemon(nombre, hp, attack) {
-  this.nombre = nombre;
-  this.hp = hp;
-  this.attack = attack;
-}
-
 
 const guardarMaestro = () => {
   console.log(maestroPokemon.value);
@@ -24,27 +16,16 @@ const guardarMaestro = () => {
 
 const cargarPokemones = async () => {
   try {
+   
+    const api = await fetch('URL');  // METER URL API / el await espera a que este todo correcto para poder añadir los pokemones.
     
-    const listaPokemons = [];
-    const cantPokemones = 4;
-
-    for (let i = 0; i < cantPokemones; i++) {
-      const randomId = Math.floor(Math.random() * 1008) + 1; // +1 para evitar el ID 0
-      const pokemonRandom = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}/`); // el await espera a que este todo correcto para poder añadir los pokemones.
-      listaPokemons.push(pokemonRandom)
+    if (!api.ok) {
+      throw new Error('No se pudo ingresar a la api');
     }
 
-    const data = listaPokemons.json();
-
-    data.forEach((pokemon, index) => {
-      const { name, stats } = pokemon;
-      const hp = stats[0].base_stat; // HP es el stat en el índice 0
-      const attack = stats[1].base_stat; // Ataque es el stat en el índice 1
-      const Pokemon = new crearPokemon(name, hp, attack);
-      MaestroPokemon.pokemons.push(Pokemon)
-    });
-    //este metodo nos da las variables destructuradas de cada pokemon.json, ahora hay que crear un metodo que cree pokemons(constructor pokemon) 
-    //que reciba los parametros (nombre, vida, ataque)
+    const data = await api.json();
+    
+    maestroPokemon.pokemons = data; // Añade los Pokémon a la lista
 
   } catch (error) {
     console.error('Error al cargar los Pokémones:', error);
@@ -66,7 +47,6 @@ const cargarPokemones = async () => {
     </form>
 
   </div>
-  
 </template>
 
 <style scoped></style>
