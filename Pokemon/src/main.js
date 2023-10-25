@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import App from './App.vue'
 import ArenaDeBatalla from './components/ArenaDeBatalla.vue'
 import BusquedaArena from './components/BusquedaArena.vue'
+import CreacionMaestro from './components/CreacionMaestro.vue'
 
 
 const routes = [
@@ -16,6 +17,10 @@ const routes = [
     {
         path: '/BusquedaArena',
         component: BusquedaArena,
+    },
+    {
+        path: '/CreacionMaestro',
+        component: CreacionMaestro,
     },
 
 ];

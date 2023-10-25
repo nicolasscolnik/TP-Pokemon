@@ -12,6 +12,9 @@
         <li class="nav-item">
           <router-link class="nav-link" to="/BusquedaArena">BusquedaArena!!</router-link>
         </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="/CreacionMaestro">CreacionMaestro!!</router-link>
+        </li>
       </ul>
     </div>
 

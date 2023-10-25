@@ -10,9 +10,10 @@ let pokemones1 = ref([]);
 let pokemones2 = ref([]);
 let pokemonEnArena1 = ref(null)
 let pokemonEnArena2 = ref(null)
-let esTurno1 = ref(true);
+let esMiTurno = ref(true);
 let jugador1 = ref(null);
 let jugador2 = ref(null);
+let soyJugador = ref();
 let mostrarComponentes = ref(false);
 let datosPeleaActuales = ref({})
 let datosSala = ref({})
@@ -103,6 +104,52 @@ const settingLocal = async () => {
     // console.log(jugador2.value)
 }
 
+const montarStoreArena = () => {
+    jugador1 = ref(storeArena.maestro1);
+    jugador2 = ref(storeArena.maestro2);
+}
+
+const settingLocal2 = () => {
+    montarStoreArena();
+    pokemones1 = ref(jugador1.value.pokemons);
+    pokemones2 = ref(jugador2.value.pokemons);
+    pokemonEnArena1 = ref(jugador1.value.pokemonEnArena);
+    pokemonEnArena2 = ref(jugador2.value.pokemonEnArena);
+    soyJugador = ref(storeMaestro.numeroJugador);
+    enviarPokemonALaArena2(pokemones2.value[0],2);
+    enviarPokemonALaArena2(pokemones1.value[0]),1;
+    
+    mostrarComponentes.value = true; // Activa la visualización de los componentes
+}
+
+const enviarPokemonALaArena2 = (pokemon, maestro) => {
+    debugger
+    const pokeAAsignar = pokemon;
+
+    if (maestro == 2) {
+        const indice = jugador2.value.pokemons.indexOf(pokeAAsignar);
+        if (indice !== -1) {
+            jugador2.value.pokemons.splice(indice, 1);
+            if (jugador2.value.pokemons.length != 3) { // Elimina el Pokémon del array de pokemons de jugador2
+                jugador2.value.pokemons.push(pokemonEnArena2.value);
+            }
+            pokemonEnArena2.value = pokeAAsignar; // Asigna el nuevo valor a pokemonEnArena2
+        }
+        console.log(jugador2.value.pokemons);
+        console.log(pokemonEnArena2.value);
+    } else {
+        // Si jugador2.value no existe, asume que jugador1 es la referencia correcta
+        const indice = jugador1.value.pokemons.indexOf(pokeAAsignar);
+        if (indice !== -1) {
+            jugador1.value.pokemons.splice(indice, 1); // Elimina el Pokémon del array de pokemons de jugador1
+            if (jugador2.value.pokemons.length != 3) {
+                jugador1.value.pokemons.push(pokemonEnArena1.value);
+            }
+            pokemonEnArena1.value = pokeAAsignar;
+        }
+    }
+};
+
 const enviarPokemonALaArena = (pokemon) => {
     const pokeAAsignar = pokemon;
 
@@ -134,7 +181,7 @@ const enviarPokemonALaArena = (pokemon) => {
 
 
 onMounted(() => {
-    settingLocal();
+    settingLocal2();
 })
 
 
@@ -148,11 +195,11 @@ onMounted(() => {
     <hr>
     <div class="luchadores-container">
         <MaestroPokemon v-if="mostrarComponentes && jugador1" @horadeluchar="enviarPokemonALaArena($event)"
-            @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash" :pokemons="pokemones1" :tuTurno="esTurno1"
+            @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash" :pokemons="pokemones1" :tuTurno="esMiTurno"
             :pokemonEnArena="pokemonEnArena1">
             Luchador 1</MaestroPokemon>
         <MaestroPokemon v-if="mostrarComponentes && jugador2" @horadeluchar="enviarPokemonALaArena($event)"
-            @lastimar="atacar(2)" @curar="curar(2)" nombre="La otra" :pokemons="pokemones2" :tuTurno="!esTurno1"
+            @lastimar="atacar(2)" @curar="curar(2)" nombre="La otra" :pokemons="pokemones2" :tuTurno="!esMiTurno"
             :pokemonEnArena="pokemonEnArena2">
             Luchador 2</MaestroPokemon>
     </div>

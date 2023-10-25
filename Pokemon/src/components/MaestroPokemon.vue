@@ -1,5 +1,8 @@
 <script setup>
 import { ref, defineEmits, onMounted } from 'vue';
+import { useStoreMaestroPokemon } from '/stores/storeMaestroPokemon'
+
+const storeMaestro = useStoreMaestroPokemon();
 
 // Esto sera usado como plantilla en ArenaDeBatalla
 const maestroPokemon = defineProps({
@@ -7,10 +10,13 @@ const maestroPokemon = defineProps({
   tuTurno: ref(true),
   pokemons: ref([]),
   pokemonEnArena: ref({}),
-  numeroJugador: ref()
+  numeroJugador: ref(0)
 })
 
-
+const checkDisabled = () => {
+  debugger
+  return (numeroJugador.value == storeMaestro.numeroJugador)
+}
 // avisa de que esta usando el componente
 const emit = defineEmits();
 
@@ -47,7 +53,7 @@ const mandarArena = (item) => {
         </label>
 
         <div>
-          <table class="table table-bordered">
+          <table class="table table-bordered" :disabled="checkDisabled()">
             <thead>
               <tr>
                 <th>Pokemon</th>
