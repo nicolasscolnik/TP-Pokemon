@@ -45,16 +45,11 @@ export const useStoreMaestroPokemon = defineStore('maestroPokemon', {
     numeroJugador: ref(2)
     }),
   actions: {
-    // mandarArena : (pokemon) => {
-    //   // Envía el Pokémon a la arena
-    //   emit('horadeluchar', pokemon);
-    
-    //   // Elimina el Pokémon del array
-    //   const index = maestroPokemon.pokemons.indexOf(pokemon);
-    //   if (index !== -1) {
-    //     maestroPokemon.pokemons.splice(index, 1);
-    //   }
-    // },
+    setter : (objeto) => {
+      nombre = objeto.nombre;
+      pokemons = objeto.pokemons;
+      pokemonEnArena = pokemons[0];
+    },
   },
 
 })

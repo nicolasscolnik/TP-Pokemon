@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import MaestroPokemon from './MaestroPokemon.vue'
+import { useStoreMaestroPokemon } from '/stores/storeMaestroPokemon'
+
+const storeMaestro = useStoreMaestroPokemon();
 
 const maestroPokemon = ref({
   nombre: "",
@@ -9,9 +12,11 @@ const maestroPokemon = ref({
 });
 
 const guardarMaestro = () => {
+  debugger
   console.log(maestroPokemon.value);
 
   cargarPokemones();
+  storeMaestro.setter(maestroPokemon);
 };
 
 const cargarPokemones = async () => {
