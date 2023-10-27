@@ -35,7 +35,6 @@ let pokemonPrueba4 = {
 
 
 
-
 export const useStoreMaestroPokemon = defineStore('maestroPokemon', {
   state: () => (  
     { nombre: ref("holis"),

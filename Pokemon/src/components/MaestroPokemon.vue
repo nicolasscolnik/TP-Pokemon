@@ -13,12 +13,6 @@ const maestroPokemon = defineProps({
   numeroJugador: ref(0)
 })
 
-const checkDisabled = () => {
-  debugger
-  return maestroPokemon.numeroJugador.value !== storeMaestro.numeroJugador.value;
-}
-
-
 const emit = defineEmits();
 
 const emitLastimar = () => {
@@ -32,9 +26,6 @@ const emitCurar = () => {
 const mandarArena = (item) => {
   emit('horadeluchar', item);
 }
-
-
-console.log(checkDisabled())
 
 </script>
 
@@ -67,7 +58,7 @@ console.log(checkDisabled())
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.vida }}</td>
                 <td>
-                  <button @click="mandarArena(item)" v-if="checkDisabled()" >Elegir</button>
+                  <button @click="mandarArena(item)" v-if="tuTurno">Elegir</button>
                 </td>
               </tr>
             </tbody>

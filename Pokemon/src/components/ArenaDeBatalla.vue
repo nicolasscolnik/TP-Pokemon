@@ -10,6 +10,8 @@ let pokemones1 = ref([]);
 let pokemones2 = ref([]);
 let pokemonEnArena1 = ref(null)
 let pokemonEnArena2 = ref(null)
+let staminaArena1 = ref(null)
+let staminaArena2 = ref(null)
 let esMiTurno = ref(true);
 let jugador1 = ref(null);
 let jugador2 = ref(null);
@@ -22,46 +24,60 @@ const storeArena = useStoreArena();
 
 
 const cambiaTurno = () => {
-    esTurno1 = !esTurno1;
-    Actualizar();
+    esMiTurno.value = !esMiTurno.value;
+    // Actualizar();
 }
 
 
 const atacar = (id) => {
     if (id == 1) {
-        stamina2.value = stamina2.value - poderAtaque1.value;
-        console.log('ataco el 1')
+        pokemonEnArena2.value.vida = pokemonEnArena2.value.vida - pokemonEnArena1.value.poderAtaque;
     } else {
-        stamina1.value = stamina1.value - poderAtaque2.value;
-        console.log('ataco el 2')
+        pokemonEnArena1.value.vida = pokemonEnArena1.value.vida - pokemonEnArena2.value.poderAtaque;
     }
     if (checkGanador()) {
-        setJuego();
+        //Proponer buscar nuevo oponente, mandar a componente busquedaArena y reiniciar propiedades
+        console.log("Hay ganador")
     }
     cambiaTurno();
 
 }
 
 const checkGanador = () => {
-    if (stamina1.value <= 0 || stamina2.value <= 0) {
-        alert('Acabo el juego SOQUETES!');
-        return true;
+    if (pokemonEnArena2.value.vida <= 0) {
+        let pokeActual = pokemonEnArena2.value;
+        alert(pokemonEnArena2.value.nombre + ' IS KAPUTTTT!!!!');
+        //sacar pokemon en arena del array
+        if (pokemones2.value.length > 0) {
+            enviarPokemonALaArena2(pokemones2.value[0], 2);
+            pokemones2.value.pop(pokeActual);
+        } else {
+            alert('Acabo el juego SOQUETES!');
+            return true;
+        }
+
+    } else if (pokemonEnArena1.value.vida <= 0) {
+        let pokeActual = pokemonEnArena1.value;
+        alert(pokemonEnArena1.value.nombre + ' IS KAPUTTTT!!!!');
+        pokemonEnArena1 = ref();
+        if (pokemones1.value.length > 0) {
+            enviarPokemonALaArena2(pokemones1.value[0], 1);
+            pokemones1.value.pop(pokeActual);
+        } else {
+            alert('Acabo el juego SOQUETES!');
+            return true;
+        }
     }
-    console.log('ok checkGanador')
 }
 
 const checkVidaMax = (curacion, vidaActual) => (curacion + vidaActual) > 100 ? 100 : (curacion + vidaActual);
 
 
 const curar = (id) => {
-    if (id == 1) {
-        stamina1.value = checkVidaMax(poderCurar1.value, stamina1.value);
-        datosPeleaActuales.value.luchador1.stamina1 = stamina1.value;
-        console.log('se curo el 1')
+    if (id == 2) {
+        pokemonEnArena2.value.vida = pokemonEnArena2.value.vida + pokemonEnArena2.value.poderCurar;
     } else {
-        stamina2.value = checkVidaMax(poderCurar2.value, stamina2.value);
-        datosPeleaActuales.value.luchador1.stamina1 = stamina1.value;
-        console.log('se curo el 2')
+        pokemonEnArena1.value.vida = pokemonEnArena1.value.vida + pokemonEnArena1.value.poderCurar;
     }
     cambiaTurno();
 }
@@ -117,7 +133,7 @@ const settingLocal2 = () => {
     pokemonEnArena2 = ref(jugador2.value.pokemonEnArena);
     soyJugador = ref(storeMaestro.numeroJugador);
     enviarPokemonALaArena2(pokemones2.value[0], 2);
-    enviarPokemonALaArena2(pokemones1.value[0]), 1;
+    enviarPokemonALaArena2(pokemones1.value[0], 1);
 
     mostrarComponentes.value = true; // Activa la visualización de los componentes
 }
@@ -134,14 +150,12 @@ const enviarPokemonALaArena2 = (pokemon, maestro) => {
             }
             pokemonEnArena2.value = pokeAAsignar; // Asigna el nuevo valor a pokemonEnArena2
         }
-        console.log(jugador2.value.pokemons);
-        console.log(pokemonEnArena2.value);
     } else {
         // Si jugador2.value no existe, asume que jugador1 es la referencia correcta
         const indice = jugador1.value.pokemons.indexOf(pokeAAsignar);
         if (indice !== -1) {
             jugador1.value.pokemons.splice(indice, 1); // Elimina el Pokémon del array de pokemons de jugador1
-            if (jugador2.value.pokemons.length != 3) {
+            if (jugador1.value.pokemons.length != 3) {
                 jugador1.value.pokemons.push(pokemonEnArena1.value);
             }
             pokemonEnArena1.value = pokeAAsignar;
@@ -149,33 +163,31 @@ const enviarPokemonALaArena2 = (pokemon, maestro) => {
     }
 };
 
-const enviarPokemonALaArena = (pokemon) => {
-    const pokeAAsignar = pokemon;
+// const enviarPokemonALaArena = (pokemon) => {
+//     const pokeAAsignar = pokemon;
 
-    if (jugador2.value) {
-        // Si jugador2.value existe
-        const indice = jugador2.value.pokemons.indexOf(pokeAAsignar);
-        if (indice !== -1) {
-            jugador2.value.pokemons.splice(indice, 1);
-            if (jugador2.value.pokemons.length != 3) { // Elimina el Pokémon del array de pokemons de jugador2
-                jugador2.value.pokemons.push(pokemonEnArena2.value);
-            }
-            pokemonEnArena2.value = pokeAAsignar; // Asigna el nuevo valor a pokemonEnArena2
-        }
-        console.log(jugador2.value.pokemons);
-        console.log(pokemonEnArena2.value);
-    } else {
-        // Si jugador2.value no existe, asume que jugador1 es la referencia correcta
-        const indice = jugador1.value.pokemons.indexOf(pokeAAsignar);
-        if (indice !== -1) {
-            jugador1.value.pokemons.splice(indice, 1); // Elimina el Pokémon del array de pokemons de jugador1
-            if (jugador2.value.pokemons.length != 3) {
-                jugador1.value.pokemons.push(pokemonEnArena1.value);
-            }
-            pokemonEnArena1.value = pokeAAsignar;
-        }
-    }
-};
+//     if (jugador2.value) {
+//         // Si jugador2.value existe
+//         const indice = jugador2.value.pokemons.indexOf(pokeAAsignar);
+//         if (indice !== -1) {
+//             jugador2.value.pokemons.splice(indice, 1);
+//             if (jugador2.value.pokemons.length != 3) { // Elimina el Pokémon del array de pokemons de jugador2
+//                 jugador2.value.pokemons.push(pokemonEnArena2.value);
+//             }
+//             pokemonEnArena2.value = pokeAAsignar; // Asigna el nuevo valor a pokemonEnArena2
+//         }
+//     } else {
+//         // Si jugador2.value no existe, asume que jugador1 es la referencia correcta
+//         const indice = jugador1.value.pokemons.indexOf(pokeAAsignar);
+//         if (indice !== -1) {
+//             jugador1.value.pokemons.splice(indice, 1); // Elimina el Pokémon del array de pokemons de jugador1
+//             if (jugador2.value.pokemons.length != 3) {
+//                 jugador1.value.pokemons.push(pokemonEnArena1.value);
+//             }
+//             pokemonEnArena1.value = pokeAAsignar;
+//         }
+//     }
+// };
 
 
 
@@ -186,18 +198,17 @@ onMounted(() => {
 
 </script>
 <template>
-    <!-- <h4>Turno j1: {{ jugador1 }}</h4>
-    <h4>Turno j2: {{ jugador2 }}</h4> -->
-    <h4>{{ esTurno1 }}</h4>
+    <h4>Turno J1= {{ esMiTurno }}</h4>
+
     <!-- <button type="button" class="btn btn-danger" @click="comienzaJuego">Comenzar!</button> -->
     <hr>
     <hr>
     <div class="luchadores-container">
-        <MaestroPokemon v-if="mostrarComponentes && jugador1" @horadeluchar="enviarPokemonALaArena($event)"
+        <MaestroPokemon v-if="mostrarComponentes && jugador1" @horadeluchar="enviarPokemonALaArena2($event, 1)"
             @lastimar="atacar(1)" @curar="curar(1)" nombre="Ash" :pokemons="pokemones1" :tuTurno="esMiTurno"
             :pokemonEnArena="pokemonEnArena1" :numeroJugador="1">
             Luchador 1</MaestroPokemon>
-        <MaestroPokemon v-if="mostrarComponentes && jugador2" @horadeluchar="enviarPokemonALaArena($event)"
+        <MaestroPokemon v-if="mostrarComponentes && jugador2" @horadeluchar="enviarPokemonALaArena2($event, 2)"
             @lastimar="atacar(2)" @curar="curar(2)" nombre="La otra" :pokemons="pokemones2" :tuTurno="!esMiTurno"
             :pokemonEnArena="pokemonEnArena2" :numeroJugador="2">
             Luchador 2</MaestroPokemon>
