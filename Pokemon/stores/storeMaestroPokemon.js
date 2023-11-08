@@ -36,18 +36,21 @@ let pokemonPrueba4 = {
 
 
 export const useStoreMaestroPokemon = defineStore('maestroPokemon', {
-  state: () => (  
-    { nombre: ref("holis"),
-    tuTurno: ref(true),
-    pokemons: ref([pokemonPrueba, pokemonPrueba2, pokemonPrueba3, pokemonPrueba4]),
-    pokemonEnArena: ref(pokemonPrueba),
-    numeroJugador: ref(2)
+  state: () => (
+    {
+      nombre: ref("holis"),
+      tuTurno: ref(true),
+      pokemons: ref([pokemonPrueba, pokemonPrueba2, pokemonPrueba3, pokemonPrueba4]),
+      pokemonEnArena: ref(pokemonPrueba),
+      numeroJugador: ref(2)
     }),
   actions: {
-    setter : (objeto) => {
-      nombre = objeto.nombre;
-      pokemons = objeto.pokemons;
-      pokemonEnArena = pokemons[0];
+    setter(objeto){
+      this.nombre = objeto.nombre;
+      debugger
+      this.pokemons = objeto.pokemons;
+      console.log(objeto)
+      // this.pokemonEnArena = objeto.pokemons[0].value;
     },
   },
 
