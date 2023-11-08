@@ -22,45 +22,18 @@ function crearPokemon(nombreAPI, vidaAPI, ataqueAPI, defensaAPI, fotoAPI) {
   return poke;
 }
 
-const guardarMaestro = () => {
-  console.log(maestroPokemon.value);
-  cargarPokemones();
-  debugger
+const guardarMaestro = async () => {
+  await cargarPokemones();
+  console.log(maestroPokemon.value.pokemons)
   storeMaestro.setter(maestroPokemon)
-  console.log(storeMaestro)
+  console.log("store: " + storeMaestro.value)
 };
-
-// const cargarPokemones = async () => { // no funca, hay que revisar. No asigna el atributo pokemon al maestroPokemon
-//   try {
-//     const listaPokemons = [];
-//     const cantPokemones = 4;
-//     for (let i = 0; i < cantPokemones; i++) {
-//       const randomId = Math.floor(Math.random() * 1008) + 1; // +1 para evitar el ID 0
-//       const pokemonRandom = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}/`); // el await espera a que este todo correcto para poder añadir los pokemones.
-//       const data = await pokemonRandom.json();
-//       listaPokemons.push(pokemonRandom)
-//       console.log(listaPokemons)
-//     }
-
-//     data.forEach((pokemon, index) => {
-//       const { name, stats } = pokemon;
-//       const hp = stats[0].base_stat; // HP es el stat en el índice 0
-//       const attack = stats[1].base_stat; // Ataque es el stat en el índice 1
-//       const Pokemon = new crearPokemon(name, hp, attack);
-//       maestroPokemon.pokemons.push(Pokemon)
-//     });
-//     //este metodo nos da las variables destructuradas de cada pokemon.json, ahora hay que crear un metodo que cree pokemons(constructor pokemon) 
-//     //que reciba los parametros (nombre, vida, ataque)
-//   } catch (error) {
-//     console.error('Error al cargar los Pokémones:', error);
-//   }
-// }
 
 const cargarPokemones = async () => {
   try {
     const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
 
-    const getRandomPokemonId = () => Math.floor(Math.random() * 151) + 1; // Genera un ID de Pokémon aleatorio entre 1 y 151.
+    const getRandomPokemonId = () => Math.floor(Math.random() * 151) + 1;
 
     const pokemons = [];
     for (let i = 0; i < 4; i++) {
@@ -82,8 +55,6 @@ const cargarPokemones = async () => {
   }
 };
 
-
-
 </script>
 
 <template>
@@ -99,6 +70,7 @@ const cargarPokemones = async () => {
     </form>
     <button @click="guardarMaestro">pruebaLocal</button>
   </div>
+  <div v-if="storeMaestro!==null">{{ storeMaestro }}</div>
 </template>
 
 <style scoped></style>
