@@ -60,13 +60,13 @@ const cargarPokemones = async () => {
 <template>
   <div>
 
-    <form @submit="guardarMaestro">
+    <form>
       <label for="nombre">Nombre:</label>
       <input type="text" v-model="maestroPokemon.nombre" id="nombre" required>
 
-      <button type="submit">Guardar</button>
+      
 
-      <router-link to="/BusquedaArena">Elegir Arena</router-link>
+      <router-link to="/BusquedaArena"><button @click="guardarMaestro">Guardar</button></router-link>
     </form>
     <button @click="guardarMaestro">pruebaLocal</button>
   </div>

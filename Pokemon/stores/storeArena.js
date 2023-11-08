@@ -70,18 +70,18 @@ export const useStoreArena = defineStore('arenaBatalla', {
     {
       url: "",
       maestro1: ref({
-        nombre: ref("holis"),
-        tuTurno: ref(true),
-        pokemons: ref([pokemonPrueba, pokemonPrueba2, pokemonPrueba3, pokemonPrueba4]),
-        pokemonEnArena: ref(pokemonPrueba),
-        numeroJugador: ref(1)
+        // nombre: ref("holis"),
+        // tuTurno: ref(true),
+        // pokemons: ref([pokemonPrueba, pokemonPrueba2, pokemonPrueba3, pokemonPrueba4]),
+        // pokemonEnArena: ref(pokemonPrueba),
+        // numeroJugador: ref(1)
       }),
       maestro2: ref({
-        nombre: ref("holis"),
-        tuTurno: ref(true),
-        pokemons: ref([pokemonPrueba5, pokemonPrueba6, pokemonPrueba7, pokemonPrueba8]),
-        pokemonEnArena: ref(pokemonPrueba7),
-        numeroJugador: ref(2)
+        // nombre: ref("holis"),
+        // tuTurno: ref(true),
+        // pokemons: ref([pokemonPrueba5, pokemonPrueba6, pokemonPrueba7, pokemonPrueba8]),
+        // pokemonEnArena: ref(pokemonPrueba7),
+        // numeroJugador: ref(2)
       }),
     }),
   actions: {
