@@ -20,14 +20,13 @@ class PokedexController {
       const { id } = req.params;
       const pokedex = await Pokedex.findOne({
         where: { id },
-        attributes: ["id", "name", "lastName", "mail"],
+        attributes: [],
       });
-
-      if (!user) throw new Error("No hay user con ese id");
+      if (!pokedex) throw new Error("No hay user con ese id");
 
       res.status(200).send({
         success: true,
-        message: "User con id: " + id,
+        message: "Pokedex con id: " + id,
         data: pokedex,
       });
     } catch (error) {
@@ -38,10 +37,8 @@ class PokedexController {
   createPokedex = async (req, res) => {
     try {
       const { name, lastName, mail } = req.body;
-      //  if (!name) throw new Error("El name no puede estar vacio");
-      //  console.log(`🚀 ~ RoleController ~ createRole= ~ name:`, name);
-      const pokedex = await Pokedex.create({ name, lastName, mail });
-      if (!pokedex) throw new Error("El user no puede estar vacio");
+      const pokedex = await Pokedex.create({ name, lastName, mail }); //PREGUNTAR!!!
+      if (!pokedex) throw new Error("El pokedex no puede estar vacio");
 
       res
         .status(200)
@@ -53,7 +50,7 @@ class PokedexController {
 
   updatePokedex = async (req, res) => {
     try {
-      const { name, lastName, mail } = req.body;
+      const { name, lastName, mail } = req.body; //PREGUNTAR!!!
       const { id } = req.params;
       const pokedex = await Pokedex.update(
         { name, lastName, mail },
@@ -70,7 +67,7 @@ class PokedexController {
     }
   };
 
-  deletePokedex = async (req, res) => {
+  deletePokedex = async (req, res) => {  //PREGUNTAR!!!
     try {
       const { name, lastName, mail } = req.body;
       const pokedex = await Pokedex.destroy({
@@ -78,7 +75,7 @@ class PokedexController {
       });
       res
         .status(200)
-        .send({ success: true, message: "User " + pokedex + " borrado", data: pokedex });
+        .send({ success: true, message: "Pokedex " + pokedex + " borrado", data: pokedex });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
     }

@@ -8,5 +8,5 @@ salasRoutes.get("/:id", salaController.getSalaById);
 salasRoutes.post("/", salaController.createSala);
 salasRoutes.put("/:id", salaController.updateSala);
 salasRoutes.delete("/", salaController.deleteSala);
-
+salasRoutes.post("/salaAvailable/", salaController.getSalaAvailable);
 export default salasRoutes;

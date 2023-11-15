@@ -15,9 +15,15 @@ class SalaController {
     }
   };
 
-  getSalaAvailable = async () => {
+  getSalaAvailable = async (req, res) => {
     try {
-      const salaLibre = await Sala.findOne({where: idUser2 == null})
+      const { id } = req.body;
+      const salaLibre = await Sala.findOne({ where: idUser2 == null })
+      if (salaLibre) {
+        salaLibre.idUser2 = id;
+      } else {
+        salaLibre = await Sala.create({ idUser1: id });
+      }
       res.status(200).send(salaLibre)
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
