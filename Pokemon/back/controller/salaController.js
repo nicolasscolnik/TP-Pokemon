@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import { Sala } from "../Models/index.js";
 
 class SalaController {
