@@ -25,6 +25,8 @@ const storeArena = useStoreArena();
 
 const cambiaTurno = () => {
     esMiTurno.value = !esMiTurno.value;
+    console.log(jugador1.value)
+    console.log(jugador2.value)
     // Actualizar();
 }
 
@@ -192,6 +194,8 @@ const enviarPokemonALaArena2 = (pokemon, maestro) => {
 
 
 onMounted(() => {
+    // const intervalo = setInterval(ObtenerValorSala, 2000)
+    // ObtenerValorSala();
     settingLocal2();
 })
 

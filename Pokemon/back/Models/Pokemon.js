@@ -1,37 +1,38 @@
 import { DataTypes as DT, Model } from "sequelize";
 import connection from "../connection/connection.js";
 
-class User extends Model {}
+class Pokemon extends Model {}
 
-User.init(
+Pokemon.init(
   {
     nombre: {
       type: DT.STRING(50),
       allowNull: false,
     },
-    tuTurno: {
-      type: DT.BOOLEAN ,
+    vida: {
+      type: DT.DOUBLE ,
       allowNull: false,
     },
-    pokemons: { //obejto
-      type: DT.STRING(50),
+    poderAtaque: { //obejto
+      type: DT.DOUBLE,
       allowNull: false,
     },
-    pokemonEnArena: { //objeto
-      type: DT.STRING(50),
+    poderCurar: { //objeto
+      type: DT.DOUBLE,
       allowNull: false,
     },
-    numeroJugador: {
-      type: DT.INTEGER,
+    foto: {
+      type: DT.STRING,
       allowNull: false,
     },
   },
 
+
   {
     sequelize: connection,
-    modelName: "User",
+    modelName: "Pokemon",
     timestamps: false,
   }
 );
 
-export default User;
+export default Pokemon;
