@@ -27,20 +27,36 @@ const mandarArena = (item) => {
   emit('horadeluchar', item);
 }
 
+const reproducirSonido1 = () => {
+  const audioElement = document.getElementById('audioElement1');
+  audioElement.play();
+}
+
+
+const reproducirSonido2 = () => {
+  const audioElement = document.getElementById('audioElement2');
+  audioElement.play();
+}
+
 </script>
 
 <template>
-  <div class="card" style="width: 18rem;">
+  <audio id="audioElement1" src="/src/components/Double Kick 1hit.mp3"></audio>
+  <audio id="audioElement2" src="/src/components/Petal Dance part 1.mp3"></audio>
+
+
+  <div class="card">
     <h3 class="card-title">{{ nombre }}</h3>
-    <img class="card-img-top" v-if="pokemonEnArena" :src="pokemonEnArena.foto" alt="No leyo la imagen">
+    <img class="foto" v-if="pokemonEnArena" :src="pokemonEnArena.foto" alt="No leyo la imagen">
     <div class="card-body">
-      <h5 class="card-title">{{ pokemonEnArena.nombre }} -- {{ pokemonEnArena.vida }}</h5>
-      <div>
-        <label v-if="tuTurno">
-          Tu turno: PELEA!!!
+      <h5 class="card-title">{{ pokemonEnArena.nombre+":" }}{{ "HP " + pokemonEnArena.vida }}</h5>
+      <div class="panel-acciones">
+        <label class="aviso-turno" v-if="tuTurno">
+          <h6>Tu turno: PELEA!!!</h6>
           <div class="container">
-            <button @click="emitLastimar">Ataca!</button>
-            <button @click="emitCurar">Curate!</button>
+            <button class="btn btn-danger"  @click="() => { emitLastimar(); reproducirSonido1(); }">Ataca!</button>
+            <div class="espacio"> <img src="/src/components/pokebola.png" alt=""></div> <!-- Espacio entre los botones -->
+            <button class="btn btn-success" @click="() => { emitLastimar(); reproducirSonido2(); }">Curate!</button>
           </div>
         </label>
 
@@ -58,7 +74,7 @@ const mandarArena = (item) => {
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.vida }}</td>
                 <td>
-                  <button @click="mandarArena(item)" v-if="tuTurno">Elegir</button>
+                  <button class="btn btn-dark" @click="mandarArena(item)" v-if="tuTurno">Elegir</button>
                 </td>
               </tr>
             </tbody>
@@ -71,8 +87,66 @@ const mandarArena = (item) => {
 </template>
   
 <style scoped>
-.card-img-top {
-  height: 100px;
-  width: 100px;
+.card{
+  border: 20px ridge #462d72;
+  width: 27rem;
+  color: black;
 }
+.card-title{
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  text-decoration: underline;
+}
+
+
+.foto {
+  
+  height: 210px;
+  width: 300px;
+  margin: 0 auto;
+  padding: 5px;
+  display: block;
+  border: 6px inset  #a3a3a3;
+}
+
+.panel-acciones{
+  text-align: center;
+}
+
+
+.aviso-turno h6{
+  margin: 5px 20px 5px 20px ;
+  padding: 4px;
+  border: 4px outset  #21e1e3; 
+
+}
+
+.container{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 10px;
+}
+
+.espacio {
+  margin: 5px;
+  height: auto;
+  display: inline-block;
+}
+.espacio img {
+  width: 30px;
+  height: 30px;
+}
+
+.table{
+  border: 7px inset  #a3a3a3;
+}
+
+tbody{
+  border: 7px inset  #a3a3a3;
+}
+
+
+
 </style>

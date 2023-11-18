@@ -20,10 +20,10 @@ const buscarArena = async () => {
     const apiUrl = "http://localhost:8080/api/salas/salaAvailable/";
 
     await fetch(apiUrl, {
-        mode: 'no-cors',
-        method: 'POST', 
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(storeMaestro)
+      mode: 'no-cors',
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(storeMaestro)
     })
     alert("hasta linea 28 OK!")
     console.log(storeMaestro)
@@ -32,13 +32,108 @@ const buscarArena = async () => {
   }
 };
 onMounted(() => {
-    buscarArena();
+  buscarArena();
 })
 
+const sonidoDesactivado = ref(false);
+const toggleSonido = () => {
+  sonidoDesactivado.value = !sonidoDesactivado.value;
+};
+
 </script>
+
+
+
 <template>
-    estas en busqueda arena<br>
-    -----------------
-    <div>{{ storeMaestro }}</div>
-    <div>{{ storeArena }}</div>
+  <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
+    src="/src/components/Professor Oak.mp3"></audio>
+
+
+  <video autoplay loop muted class="video-background">
+    <source src="/src/components/Pikachu Pixel Animated Loop.mp4" type="video/mp4">
+  </video>
+
+  <img class="icono-sonido" :src="sonidoDesactivado ?  '/src/components/musicOff.png': '/src/components/musicOn.jpg'"
+    alt="Icono Sonido" @click="toggleSonido" />
+
+  <h1 class="cargando-mensaje"> CARGANDO</h1>
+
+  <div class="wrapper">
+    <div class="space">
+      <div class="loading"></div>
+    </div>
+  </div>
+
+
+  <!-- <div>{{ storeMaestro }}</div>
+<div>{{ storeArena }}</div> -->
 </template>
+
+<style>
+* {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+
+.cargando-mensaje {
+  text-align: center;
+  margin-top: 200px;
+  color: rgb(0, 0, 0);
+}
+
+@keyframes loading {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+.wrapper {
+
+  border: 20px ridge #1754c5;
+  padding: 4px;
+  width: 500px;
+  height: 75px;
+  margin: 50px auto 50px auto;
+  background: whitesmoke;
+}
+
+.space {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.loading {
+  position: absolute;
+  background-color: rgb(247, 204, 10);
+  width: 100%;
+  height: 100%;
+  animation: loading 5s steps(40) infinite;
+}
+
+.icono-sonido {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  position: fixed;
+  top: 75px;
+  left: 10px;
+  z-index: 1000;
+  border-radius: 5px;
+}
+</style>

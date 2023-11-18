@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import MaestroPokemon from './MaestroPokemon.vue'
 import { useStoreMaestroPokemon } from '/stores/storeMaestroPokemon'
 const storeMaestro = useStoreMaestroPokemon();
+
 const maestroPokemon = ref({
   nombre: "",
   tuTurno: true,
@@ -47,89 +48,118 @@ const cargarPokemones = async () => {
   } catch (error) {
     console.error("Error al obtener Pokémon:", error);
   }
+
 };
+
+const sonidoDesactivado = ref(false);
+const toggleSonido = () => {
+  sonidoDesactivado.value = !sonidoDesactivado.value;
+};
+
 </script>
+
 <template>
-<div class="gradient-background">
-  <div class="logo-container">
-    <img class="logo" src="./International_Pokémon_logo.svg.png" alt="" srcset="">
-  </div>
-  <div class="container-formulario">
-    <form class="formulario">
-      <label for="nombre">Nombre:</label>
+  <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
+    src="/src/components/Laboratory.mp3"></audio>
+
+  <video autoplay loop muted class="video-background">
+    <source src="/src/components/sr animated.mp4" type="video/mp4">
+  </video>
+  <img class="icono-sonido" :src="sonidoDesactivado ?  '/src/components/musicOff.png': '/src/components/musicOn.jpg'"
+    alt="Icono Sonido" @click="toggleSonido" />
+
+  <div class="gradient-background">
+
+    <div class="logo-container">
+      <img class="logo" src="./International_Pokémon_logo.svg.png" alt="" srcset="">
+    </div>
+    <div class="container-formulario">
+      <form class="formulario">
+        <label for="nombre">Nombre:</label>
+        <br>
+        <input type="text" v-model="maestroPokemon.nombre" id="nombre" required>
+        <br>
+        <router-link to="/BusquedaArena"><button class="btn btn-warning"
+            @click="guardarMaestro">Guardar</button></router-link>
+      </form>
       <br>
-      <input type="text" v-model="maestroPokemon.nombre" id="nombre" required>
       <br>
-      <router-link to="/BusquedaArena"><button @click="guardarMaestro">Guardar</button></router-link>
-    </form>
-    <br>
-    <br>
+    </div>
+    <!-- <button @click="guardarMaestro">pruebaLocal</button>
+  <div v-if="storeMaestro !== null">{{ storeMaestro }}</div> -->
   </div>
-  <button @click="guardarMaestro">pruebaLocal</button>
-  <div v-if="storeMaestro !== null">{{ storeMaestro }}</div>
-</div>
 </template>
+
+
 <style scoped>
-body{
-  margin: 0px;
-  padding: 0px;
+* {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-}
-.gradient-background {
-  background: linear-gradient(300deg,deepskyblue,darkviolet,blue);
-  background-size: 180% 180%;
-  animation: gradient-animation 18s ease infinite;
-}
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  object-fit: cover;
+  z-index: -1;
 }
 
 .logo-container {
   width: 100%;
   height: 100%;
-  border: 2px solid black;
   margin-bottom: 10px;
 }
+
 .logo {
   width: 800px;
-  height: 275px;
+  height: 300px;
   margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 25px;
+
 }
+
 .container-formulario {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
   padding: 15px;
+  margin-top: 40px;
 }
+
 .formulario {
   display: inline-block;
   justify-content: center;
   align-items: center;
   width: 400px;
-  height: 150px;
-  border: 2px solid rgb(247, 243, 9);
+  height: 185px;
+  border: 20px ridge #366dd1;
   border-radius: 10px;
   text-align: center;
-  background: white;
+  background: rgb(255, 255, 255);
 }
-.formulario label{
-  margin-top: 5px;
+
+.formulario label {
+  margin-top: 10px;
 }
-.formulario input{
+
+.formulario input {
   width: 250px;
   margin: 15px;
+}
+
+.icono-sonido {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  position: fixed;
+  top: 75px;
+  left: 10px;
+  z-index: 1000;
+  border-radius: 5px;
 }
 </style>

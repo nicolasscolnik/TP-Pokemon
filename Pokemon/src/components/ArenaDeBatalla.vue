@@ -199,10 +199,25 @@ onMounted(() => {
     settingLocal2();
 })
 
+const sonidoDesactivado = ref(false);
+const toggleSonido = () => {
+    sonidoDesactivado.value = !sonidoDesactivado.value;
+};
 
 </script>
+
 <template>
-    <h4>Turno J1= {{ esMiTurno }}</h4>
+    <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
+        src="/src/components/Battle (Vs. Wild Pokémon).mp3"></audio>
+
+    <video autoplay loop muted class="video-background">
+        <source src="/src/components/Earth and Stars Animated Wallpaper [1080p Looping] [With DL] - Trim.mp4"
+            type="video/mp4">
+    </video>
+
+    <img class="icono-sonido" :src="sonidoDesactivado ? '/src/components/musicOff.png': '/src/components/musicOn.jpg'"
+        alt="Icono Sonido" @click="toggleSonido" />
+    <!-- <h4>Turno J1= {{ esMiTurno }}</h4> -->
 
     <!-- <button type="button" class="btn btn-danger" @click="comienzaJuego">Comenzar!</button> -->
     <hr>
@@ -220,11 +235,34 @@ onMounted(() => {
 </template>
 
 <style scoped>
+* {
+    font-family: 'Press Start 2P', cursive;
+}
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
 .luchadores-container {
     display: flex;
     justify-content: space-between;
-    /* Distribuye los elementos a lo largo del contenedor */
     align-items: center;
-    /* Centra verticalmente los elementos */
+}
+
+.icono-sonido {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    position: fixed;
+    top: 75px;
+    left: 10px;
+    z-index: 1000;
+    border-radius: 5px;
 }
 </style>
