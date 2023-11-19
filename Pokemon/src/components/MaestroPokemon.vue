@@ -56,7 +56,7 @@ const reproducirSonido2 = () => {
           <div class="container">
             <button class="btn btn-danger"  @click="() => { emitLastimar(); reproducirSonido1(); }">Ataca!</button>
             <div class="espacio"> <img src="/src/components/Media/Imagenes/pokebola.png" alt=""></div> <!-- Espacio entre los botones -->
-            <button class="btn btn-success" @click="() => { emitLastimar(); reproducirSonido2(); }">Curate!</button>
+            <button class="btn btn-success" @click="() => { emitCurar(); reproducirSonido2(); }">Curate!</button>
           </div>
         </label>
 
