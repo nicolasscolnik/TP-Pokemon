@@ -41,8 +41,8 @@ const reproducirSonido2 = () => {
 </script>
 
 <template>
-  <audio id="audioElement1" src="/src/components/Double Kick 1hit.mp3"></audio>
-  <audio id="audioElement2" src="/src/components/Petal Dance part 1.mp3"></audio>
+  <audio id="audioElement1" src="/src/components/Media/Audio/Double Kick 1hit.mp3"></audio>
+  <audio id="audioElement2" src="/src/components/Media/Audio/Petal Dance part 1.mp3"></audio>
 
 
   <div class="card">
@@ -55,7 +55,7 @@ const reproducirSonido2 = () => {
           <h6>Tu turno: PELEA!!!</h6>
           <div class="container">
             <button class="btn btn-danger"  @click="() => { emitLastimar(); reproducirSonido1(); }">Ataca!</button>
-            <div class="espacio"> <img src="/src/components/pokebola.png" alt=""></div> <!-- Espacio entre los botones -->
+            <div class="espacio"> <img src="/src/components/Media/Imagenes/pokebola.png" alt=""></div> <!-- Espacio entre los botones -->
             <button class="btn btn-success" @click="() => { emitLastimar(); reproducirSonido2(); }">Curate!</button>
           </div>
         </label>

@@ -60,18 +60,18 @@ const toggleSonido = () => {
 
 <template>
   <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
-    src="/src/components/Laboratory.mp3"></audio>
+    src="/src/components/Media/Audio/Laboratory.mp3"></audio>
 
   <video autoplay loop muted class="video-background">
-    <source src="/src/components/sr animated.mp4" type="video/mp4">
+    <source src="/src/components/Media/Video/sr animated.mp4" type="video/mp4">
   </video>
-  <img class="icono-sonido" :src="sonidoDesactivado ?  '/src/components/musicOff.png': '/src/components/musicOn.jpg'"
+  <img class="icono-sonido" :src="sonidoDesactivado ?  '/src/components/Media/Imagenes/musicOff.png': '/src/components/Media/Imagenes/musicOn.jpg'"
     alt="Icono Sonido" @click="toggleSonido" />
 
   <div class="gradient-background">
 
     <div class="logo-container">
-      <img class="logo" src="./International_Pokémon_logo.svg.png" alt="" srcset="">
+      <img class="logo" src="/src/components/Media/Imagenes/International_Pokémon_logo.svg.png" alt="" srcset="">
     </div>
     <div class="container-formulario">
       <form class="formulario">

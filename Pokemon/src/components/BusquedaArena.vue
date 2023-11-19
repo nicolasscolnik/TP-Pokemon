@@ -46,14 +46,14 @@ const toggleSonido = () => {
 
 <template>
   <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
-    src="/src/components/Professor Oak.mp3"></audio>
+    src="/src/components/Media/Audio/Professor Oak.mp3"></audio>
 
 
   <video autoplay loop muted class="video-background">
-    <source src="/src/components/Pikachu Pixel Animated Loop.mp4" type="video/mp4">
+    <source src="/src/components/Media/Video/Pikachu Pixel Animated Loop.mp4" type="video/mp4">
   </video>
 
-  <img class="icono-sonido" :src="sonidoDesactivado ?  '/src/components/musicOff.png': '/src/components/musicOn.jpg'"
+  <img class="icono-sonido" :src="sonidoDesactivado ?  '/src/components/Media/Imagenes/musicOff.png': '/src/components/Media/Imagenes/musicOn.jpg'"
     alt="Icono Sonido" @click="toggleSonido" />
 
   <h1 class="cargando-mensaje"> CARGANDO</h1>
