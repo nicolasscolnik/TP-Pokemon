@@ -1,9 +1,12 @@
 
 <script setup>
 import { ref } from 'vue'
-import MaestroPokemon from './MaestroPokemon.vue'
+
 import { useStoreMaestroPokemon } from '/stores/storeMaestroPokemon'
+import { useStoreArena } from '/stores/storeArena'
+
 const storeMaestro = useStoreMaestroPokemon();
+const storeArena = useStoreArena();
 
 const maestroPokemon = ref({
   nombre: "",
@@ -22,9 +25,12 @@ function crearPokemon(nombreAPI, vidaAPI, ataqueAPI, defensaAPI, fotoAPI) {
 }
 const guardarMaestro = async () => {
   await cargarPokemones();
-  console.log(maestroPokemon.value.pokemons)
   await storeMaestro.setter(maestroPokemon)
-  console.log("store: " + storeMaestro.value)
+  await storeArena.setter(maestroPokemon, 1)
+  console.log(storeArena.maestro1)
+  await cargarPokemones();
+  await storeArena.setter(maestroPokemon, 2)
+  console.log(storeArena.maestro2)
 };
 const cargarPokemones = async () => {
   try {
@@ -59,14 +65,14 @@ const toggleSonido = () => {
 </script>
 
 <template>
-
   <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
     src="/src/components/Media/Audio/Laboratory.mp3"></audio>
 
   <video autoplay loop muted class="video-background">
     <source src="/src/components/Media/Video/sr animated.mp4" type="video/mp4">
   </video>
-  <img class="icono-sonido" :src="sonidoDesactivado ?  '/src/components/Media/Imagenes/musicOff.png': '/src/components/Media/Imagenes/musicOn.jpg'"
+  <img class="icono-sonido"
+    :src="sonidoDesactivado ? '/src/components/Media/Imagenes/musicOff.png' : '/src/components/Media/Imagenes/musicOn.jpg'"
     alt="Icono Sonido" @click="toggleSonido" />
 
   <div class="gradient-background">
@@ -80,7 +86,7 @@ const toggleSonido = () => {
         <br>
         <input type="text" v-model="maestroPokemon.nombre" id="nombre" required>
         <br>
-        <router-link to="/BusquedaArena"><button class="btn btn-warning"
+        <router-link to="/ArenaDeBatalla"><button class="btn btn-warning"
             @click="guardarMaestro">Guardar</button></router-link>
       </form>
       <br>
