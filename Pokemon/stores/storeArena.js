@@ -90,11 +90,11 @@ export const useStoreArena = defineStore('arenaBatalla', {
       if (numJugador === 1) {
         this.maestro1.nombre = objeto.nombre;
         this.maestro1.pokemons= objeto.pokemons;
-        // this.maestro1.pokemonEnArena = objeto.pokemons.value[0];
+        this.maestro1.pokemonEnArena = objeto.pokemons[0];
       } else {
         this.maestro2.nombre = "Ash Ketchup";
         this.maestro2.pokemons = objeto.pokemons;
-        // this.maestro2.pokemonEnArena = objeto.pokemons.value[0];
+        this.maestro2.pokemonEnArena = objeto.pokemons[0];
       }
     },
   },

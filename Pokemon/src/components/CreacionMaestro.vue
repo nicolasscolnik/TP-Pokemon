@@ -27,10 +27,8 @@ const guardarMaestro = async () => {
   await cargarPokemones();
   await storeMaestro.setter(maestroPokemon)
   await storeArena.setter(maestroPokemon, 1)
-  console.log(storeArena.maestro1)
   await cargarPokemones();
   await storeArena.setter(maestroPokemon, 2)
-  console.log(storeArena.maestro2)
 };
 const cargarPokemones = async () => {
   try {
