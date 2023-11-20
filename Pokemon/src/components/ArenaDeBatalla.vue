@@ -3,7 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useStoreMaestroPokemon } from '/stores/storeMaestroPokemon'
 import { useStoreArena } from '/stores/storeArena'
 import MaestroPokemon from './MaestroPokemon.vue'
-
+import io from 'socket.io-client';
 
 
 let pokemones1 = ref([]);
@@ -21,6 +21,31 @@ let datosPeleaActuales = ref({})
 let datosSala = ref({})
 const storeMaestro = useStoreMaestroPokemon();
 const storeArena = useStoreArena();
+
+//SOCKET.IO
+
+
+const socket = io('http://localhost:8080');
+const messages = ref([]);
+const message = ref('');
+const storeArenaIO = ref(storeArena)
+
+const sendMessage = () => {
+    if (message.value) {
+        socket.emit('message', message.value);
+        message.value = '';
+    }
+};
+
+const sendStoreArenaIO = () => {
+    socket.emit('storeArena', storeArena);
+    console.log(storeArena)
+    // if (storeArenaIO.value) {
+    //     socket.emit('storeArena', storeArenaIO.value);
+    // }
+};
+
+//TERMINA SOCKET.IO
 
 
 const cambiaTurno = () => {
@@ -165,39 +190,30 @@ const enviarPokemonALaArena2 = (pokemon, maestro) => {
     }
 };
 
-// const enviarPokemonALaArena = (pokemon) => {
-//     const pokeAAsignar = pokemon;
-
-//     if (jugador2.value) {
-//         // Si jugador2.value existe
-//         const indice = jugador2.value.pokemons.indexOf(pokeAAsignar);
-//         if (indice !== -1) {
-//             jugador2.value.pokemons.splice(indice, 1);
-//             if (jugador2.value.pokemons.length != 3) { // Elimina el Pokémon del array de pokemons de jugador2
-//                 jugador2.value.pokemons.push(pokemonEnArena2.value);
-//             }
-//             pokemonEnArena2.value = pokeAAsignar; // Asigna el nuevo valor a pokemonEnArena2
-//         }
-//     } else {
-//         // Si jugador2.value no existe, asume que jugador1 es la referencia correcta
-//         const indice = jugador1.value.pokemons.indexOf(pokeAAsignar);
-//         if (indice !== -1) {
-//             jugador1.value.pokemons.splice(indice, 1); // Elimina el Pokémon del array de pokemons de jugador1
-//             if (jugador2.value.pokemons.length != 3) {
-//                 jugador1.value.pokemons.push(pokemonEnArena1.value);
-//             }
-//             pokemonEnArena1.value = pokeAAsignar;
-//         }
-//     }
-// };
-
-
-
 onMounted(() => {
-    // const intervalo = setInterval(ObtenerValorSala, 2000)
-    // ObtenerValorSala();
+    socket.connect();
+    socket.on('messageOut', (text) => {
+        messages.value.push({ text });
+    });
+    socket.on('storeArena', (storeArenaData) => {
+        storeArena.value = storeArenaData.value;
+        settingLocal2();
+    });
     settingLocal2();
 })
+
+watch(() => storeArena.value, (newValue, oldValue) => {
+    // Actualizar todos los participantes del componente MaestroPokemon
+    // jugador1.value = newValue.maestro1;
+    // jugador2.value = newValue.maestro2;
+    // pokemones1.value = jugador1.value.pokemons;
+    // pokemones2.value = jugador2.value.pokemons;
+    // pokemonEnArena1.value = jugador1.value.pokemonEnArena;
+    // pokemonEnArena2.value = jugador2.value.pokemonEnArena;
+    settingLocal2()
+    // Puedes llamar a otras funciones o realizar otras acciones según tus necesidades.
+    // Por ejemplo, podrías llamar a una función que actualice la interfaz de usuario.
+});
 
 const sonidoDesactivado = ref(false);
 const toggleSonido = () => {
@@ -215,12 +231,24 @@ const toggleSonido = () => {
             type="video/mp4">
     </video>
 
-    <img class="icono-sonido" :src="sonidoDesactivado ? '/src/components/Media/Imagenes/musicOff.png': '/src/components/Media/Imagenes/musicOn.jpg'"
+    <img class="icono-sonido"
+        :src="sonidoDesactivado ? '/src/components/Media/Imagenes/musicOff.png' : '/src/components/Media/Imagenes/musicOn.jpg'"
         alt="Icono Sonido" @click="toggleSonido" />
     <!-- <h4>Turno J1= {{ esMiTurno }}</h4> -->
 
     <!-- <button type="button" class="btn btn-danger" @click="comienzaJuego">Comenzar!</button> -->
     <hr>
+    <div>
+        <ul id="chat">
+            <li v-for="mensaje in messages">{{ mensaje }}
+            </li>
+        </ul>
+    </div>
+    <div>
+        <!-- <div v-for="message in messages" :key="message.id">{{ message.text }}</div> -->
+        <input v-model="message" type="text" />
+        <input @click="sendMessage" type="button" value="Enviar!" />
+    </div>
     <hr>
     <div class="luchadores-container">
         <MaestroPokemon v-if="mostrarComponentes && jugador1" @horadeluchar="enviarPokemonALaArena2($event, 1)"

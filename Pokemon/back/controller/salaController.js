@@ -1,4 +1,5 @@
 import { Sala } from "../Models/index.js";
+import { Sequelize, DataTypes, Op } from 'sequelize';
 
 class SalaController {
   constructor() { }
@@ -17,18 +18,16 @@ class SalaController {
 
   getSalaAvailable = async (req, res) => {
     try {
-      const { id } = req.body;
-      const salaLibre = await Sala.findOne({ where: idUser2 == null })
+      const salaLibre = await Sala.findOne({ where: { idUser2: null } });
       if (salaLibre) {
-        salaLibre.idUser2 = id;
+        res.status(200).send(salaLibre);
       } else {
-        salaLibre = await Sala.create({ idUser1: id });
+        res.status(200).send(null);
       }
-      res.status(200).send(salaLibre)
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
     }
-  }
+  };
 
   getSalaById = async (req, res) => {
     try {
@@ -64,26 +63,53 @@ class SalaController {
     }
   };
 
+  // updateSala = async (req, res) => {
+  //   try {
+  //     const { idUser2 } = req.params;
+  //     const { id } = req.params;
+  //     const sala = await Sala.update(
+  //       { idUser2 },
+  //       {
+  //         where: { id },
+  //       }
+  //     );
+  //     if (sala[0] === 0) throw new Error("no se modifico nada");
+  //     res
+  //       .status(200)
+  //       .send({ success: true, message: "sala modificado", data: sala });
+  //   } catch (error) {
+  //     res.status(400).send({ success: false, message: error.message });
+  //   }
+  // };
+
   updateSala = async (req, res) => {
     try {
-      const { idUser1 } = req.params;
-      const { idUser2 } = req.params;
+      const { idUser2 } = req.body;
       const { id } = req.params;
-      const sala = await Sala.update(
-        { idUser1 },
-        { idUser2 },
-        {
-          where: { id },
-        }
-      );
-      if (sala[0] === 0) throw new Error("no se modifico nada");
-      res
-        .status(200)
-        .send({ success: true, message: "sala modificado", data: sala });
+
+      // Utiliza un objeto con los valores que deseas actualizar
+      const updatedValues = { idUser2 };
+
+      // Utiliza el objeto con la condición en el segundo argumento
+      const sala = await Sala.update(updatedValues, { where: { id } });
+
+      if (sala[0] === 0) {
+        throw new Error("No se modificó nada. idSala: " + id + " . nombre para iduser2: " + updatedValues);
+      }
+
+      res.status(200).send({
+        success: true,
+        message: "Sala modificada",
+        data: sala,
+      });
     } catch (error) {
-      res.status(400).send({ success: false, message: error.message });
+      res.status(400).send({
+        success: false,
+        message: error.message,
+      });
     }
   };
+
   deleteSala = async (req, res) => {
     try {
       const { id } = req.params;

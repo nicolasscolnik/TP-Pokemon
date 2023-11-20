@@ -23,7 +23,7 @@ function crearPokemon(nombreAPI, vidaAPI, ataqueAPI, defensaAPI, fotoAPI) {
 const guardarMaestro = async () => {
   await cargarPokemones();
   console.log(maestroPokemon.value.pokemons)
-  storeMaestro.setter(maestroPokemon)
+  await storeMaestro.setter(maestroPokemon)
   console.log("store: " + storeMaestro.value)
 };
 const cargarPokemones = async () => {
@@ -59,6 +59,7 @@ const toggleSonido = () => {
 </script>
 
 <template>
+
   <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
     src="/src/components/Media/Audio/Laboratory.mp3"></audio>
 

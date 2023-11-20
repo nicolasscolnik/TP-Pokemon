@@ -4,9 +4,9 @@ const salasRoutes = Router();
 const salaController = new SalaController();
 
 salasRoutes.get("", salaController.getAllSalas);
-salasRoutes.get("/:id", salaController.getSalaById);
+// salasRoutes.get("/:id", salaController.getSalaById);
 salasRoutes.post("/", salaController.createSala);
 salasRoutes.put("/:id", salaController.updateSala);
 salasRoutes.delete("/", salaController.deleteSala);
-salasRoutes.post("/salaAvailable/", salaController.getSalaAvailable);
+salasRoutes.get("/salaAvailable/", salaController.getSalaAvailable);
 export default salasRoutes;

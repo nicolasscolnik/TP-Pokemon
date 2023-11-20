@@ -1,61 +1,61 @@
 import express from "express";
+import { Server } from "socket.io"; // Importa la clase Server de socket.io
+import http from "http"; // Necesario para usar Socket.IO con express
+import cors from "cors";
 import router from "./routes/router.js";
 import connection from "./connection/connection.js";
-// import { Server, Socket } from "socket.io";
-// import cors from "cors";
 
 const app = express();
-// app.use(cors());
+const server = http.createServer(app); // Crea un servidor HTTP usando express
 
-// const http = require('http');
+// Configura CORS para permitir solicitudes desde http://localhost:5173
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use("/api", router);
 
 await connection.sync({ force: false}).then(() => {
-  app.listen(8080, () => {
+  server.listen(8080, () => {
     console.log(`🚀 ~ app.listen ~ listen: http://localhost:8080`)
   });
 });
 
-// const httpServer = require("http").createServer();
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
 
-// const io = require("socket.io")(httpServer, {
-//     cors: {
-//         origin: "http://localhost:5173"
-//       }
-//   });
+io.on("connection", (socket) => {
+  console.log("Usuario conectado");
 
+  io.emit("messageOut", "inicio de CHATBOX SOCKET.IO");
 
+  socket.on("message", (message) => {
+    console.log("Mensaje recibido:", message);
+    // Reenviar el mensaje a todos los clientes conectados.
+    io.emit("messageOut", message);
+  });
 
-// io.on('connection', (socket) => {
-//     console.log('Usuario conectado');
+  socket.on("storeArena", (store) => {
+    console.log("Mensaje recibido:", store);
+    // Reenviar el mensaje a todos los clientes conectados.
+    io.emit("messageOut", store);
+  });
 
-//     io.emit('messageOut', 'te mando un mensaje de conectado o lo que esta la bd');
+  socket.on("disconnect", () => {
+    console.log("Usuario desconectado");
+  });
+});
 
-//     socket.on('message', (message) => {
-//         console.log('Mensaje recibido:', message);
-//         // Reenviar el mensaje a todos los clientes conectados.
-//         io.emit('messageOut', message);
-//     });
+const port = process.env.PORT || 3000;
 
-//     socket.on('disconnect', () => {
-//         console.log('Usuario desconectado');
-//     });
-// });
-
-// const port = process.env.PORT || 3000;
-
-//  app.get('/', (req, res) =>{
-//      res.send('Hola server!')
-//  });
-
-
-
-//  httpServer.listen(port, () => {
-//      console.log(`Servidor escuchando en el puerto ${port}`);
-//  });
-
-
+app.get("/", (req, res) => {
+  res.send("Hola server!");
+});

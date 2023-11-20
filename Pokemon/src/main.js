@@ -13,7 +13,6 @@ const routes = [
         path: '/ArenaDeBatalla',
         component: ArenaDeBatalla,
     },
-
     {
         path: '/BusquedaArena',
         component: BusquedaArena,
