@@ -83,8 +83,6 @@ const checkGanador = () => {
     }
 }
 
-const checkVidaMax = (curacion, vidaActual) => (curacion + vidaActual) > 100 ? 100 : (curacion + vidaActual);
-
 
 const curar = (id) => {
     if (id == 2) {
@@ -151,9 +149,6 @@ const toggleSonido = () => {
 </script>
 
 <template>
-    <div>{{ pokemonEnArena1 }}</div>
-    <br>-----------
-    <div> {{ pokemonEnArena2 }}</div>   
 
     <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
         src="/src/components/Media/Audio/Battle (Vs. Wild Pokémon).mp3"></audio>
@@ -166,7 +161,6 @@ const toggleSonido = () => {
     <img class="icono-sonido"
         :src="sonidoDesactivado ? '/src/components/Media/Imagenes/musicOff.png' : '/src/components/Media/Imagenes/musicOn.jpg'"
         alt="Icono Sonido" @click="toggleSonido" />
-    <!-- <h4>Turno J1= {{ esMiTurno }}</h4> -->
 
     <button type="button" class="btn btn-danger" @click="comienzaJuego" v-if="!mostrarComponentes">Comenzar!</button>
     <hr>
