@@ -49,7 +49,7 @@ const reproducirSonido2 = () => {
     <h3 class="card-title">{{ nombre }}</h3>
     <img class="foto" v-if="pokemonEnArena" :src="pokemonEnArena.foto" alt="No leyo la imagen">
     <div class="card-body">
-      <h5 class="card-title">{{ pokemonEnArena.nombre+":" }}{{ "HP " + pokemonEnArena.vida }}</h5>
+      <h5 class="card-title">{{ pokemonEnArena.nombre+":" }}{{  pokemonEnArena.vida }}</h5>
       <div class="panel-acciones">
         <label class="aviso-turno" v-if="tuTurno">
           <h6>Tu turno: PELEA!!!</h6>

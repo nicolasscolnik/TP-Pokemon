@@ -58,9 +58,9 @@ const cambiaTurno = () => {
 
 const atacar = (id) => {
     if (id == 1) {
-        pokemonEnArena2.value.vida = pokemonEnArena2.value.vida - pokemonEnArena1.value.poderAtaque;
+        jugador2.value.pokemonEnArena.vida -= jugador1.value.pokemonEnArena.ataque;
     } else {
-        pokemonEnArena1.value.vida = pokemonEnArena1.value.vida - pokemonEnArena2.value.poderAtaque;
+        jugador1.value.pokemonEnArena.vida -= jugador2.value.pokemonEnArena.ataque;
     }
     if (checkGanador()) {
         //Proponer buscar nuevo oponente, mandar a componente busquedaArena y reiniciar propiedades
@@ -102,9 +102,9 @@ const checkVidaMax = (curacion, vidaActual) => (curacion + vidaActual) > 100 ? 1
 
 const curar = (id) => {
     if (id == 2) {
-        pokemonEnArena2.value.vida = pokemonEnArena2.value.vida + pokemonEnArena2.value.poderCurar;
+        jugador2.value.pokemonEnArena.vida += jugador2.value.pokemonEnArena.defensa;
     } else {
-        pokemonEnArena1.value.vida = pokemonEnArena1.value.vida + pokemonEnArena1.value.poderCurar;
+        jugador1.value.pokemonEnArena.vida += jugador1.value.pokemonEnArena.defensa;
     }
     cambiaTurno();
 }
@@ -144,7 +144,7 @@ const settingLocal2 = () => {
     enviarPokemonALaArena2(pokemones2.value[0], 2);
     enviarPokemonALaArena2(pokemones1.value[0], 1);
 
-    mostrarComponentes.value = true; // Activa la visualización de los componentes
+    console.log(typeof (jugador1.value.pokemonEnArena.vida))
 }
 
 const enviarPokemonALaArena2 = (pokemon, maestro) => {
@@ -173,38 +173,10 @@ const enviarPokemonALaArena2 = (pokemon, maestro) => {
 };
 
 const comienzaJuego = () => {
+
+    mostrarComponentes.value = ref(!mostrarComponentes.value);
     settingLocal2();
-    // mostrarComponentes = !mostrarComponentes;
-
 }
-
-onMounted(() => {
-    // socket.connect();
-    // socket.on('messageOut', (text) => {
-    //     messages.value.push({ text });
-    // });
-    // socket.on('storeArena', (storeArenaData) => {
-    //     storeArena.value = storeArenaData.value;
-    //     settingLocal2();
-    // });
-
-    // const intervalo = setInterval(settingLocal2(), 2000)
-    settingLocal2()
-    console.log(storeArena)
-})
-
-// watch(() => storeArena.value, (newValue, oldValue) => {
-//     // Actualizar todos los participantes del componente MaestroPokemon
-//     // jugador1.value = newValue.maestro1;
-//     // jugador2.value = newValue.maestro2;
-//     // pokemones1.value = jugador1.value.pokemons;
-//     // pokemones2.value = jugador2.value.pokemons;
-//     // pokemonEnArena1.value = jugador1.value.pokemonEnArena;
-//     // pokemonEnArena2.value = jugador2.value.pokemonEnArena;
-//     settingLocal2()
-//     // Puedes llamar a otras funciones o realizar otras acciones según tus necesidades.
-//     // Por ejemplo, podrías llamar a una función que actualice la interfaz de usuario.
-// });
 
 const sonidoDesactivado = ref(false);
 const toggleSonido = () => {
@@ -214,9 +186,10 @@ const toggleSonido = () => {
 </script>
 
 <template>
-    <div>{{ jugador1}}</div>
+    <div>{{ pokemones1 }}</div>
     <br>-----------
     <div> {{ jugador2 }}</div>
+    <div>{{ mostrarComponentes }}</div>
 
     <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
         src="/src/components/Media/Audio/Battle (Vs. Wild Pokémon).mp3"></audio>
@@ -231,18 +204,18 @@ const toggleSonido = () => {
         alt="Icono Sonido" @click="toggleSonido" />
     <!-- <h4>Turno J1= {{ esMiTurno }}</h4> -->
 
-    <!-- <button type="button" class="btn btn-danger" @click="comienzaJuego">Comenzar!</button> -->
+    <button type="button" class="btn btn-danger" @click="comienzaJuego" v-if="!mostrarComponentes">Comenzar!</button>
     <hr>
 
     <hr>
-    <div class="luchadores-container" >
-        <MaestroPokemon v-if="mostrarComponentes && jugador1" @horadeluchar="enviarPokemonALaArena2($event, 1)"
-            @lastimar="atacar(1)" @curar="curar(1)" :pokemons="pokemones1" :tuTurno="esMiTurno"
-            :pokemonEnArena="pokemonEnArena2" :numeroJugador="1">
+    <div class="luchadores-container" v-if="mostrarComponentes">
+        <MaestroPokemon v-if="jugador1" @horadeluchar="enviarPokemonALaArena2($event, 1)" @lastimar="atacar(1)"
+            @curar="curar(1)" :pokemons="pokemones1" :tuTurno="esMiTurno" :pokemonEnArena="pokemonEnArena1"
+            :numeroJugador="1">
             Luchador 1</MaestroPokemon>
-        <MaestroPokemon v-if="mostrarComponentes && jugador2" @horadeluchar="enviarPokemonALaArena2($event, 2)"
-            @lastimar="atacar(2)" @curar="curar(2)" :pokemons="pokemones2" :tuTurno="!esMiTurno"
-            :pokemonEnArena="pokemonEnArena2" :numeroJugador="2">
+        <MaestroPokemon v-if="jugador2" @horadeluchar="enviarPokemonALaArena2($event, 2)" @lastimar="atacar(2)"
+            @curar="curar(2)" :pokemons="pokemones2" :tuTurno="!esMiTurno" :pokemonEnArena="pokemonEnArena2"
+            :numeroJugador="2">
             Luchador 2</MaestroPokemon>
     </div>
 </template>
