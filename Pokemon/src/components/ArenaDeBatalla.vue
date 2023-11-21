@@ -151,6 +151,10 @@ const toggleSonido = () => {
 </script>
 
 <template>
+    <div>{{ pokemonEnArena1 }}</div>
+    <br>-----------
+    <div> {{ pokemonEnArena2 }}</div>   
+
     <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
         src="/src/components/Media/Audio/Battle (Vs. Wild Pokémon).mp3"></audio>
 
@@ -162,6 +166,7 @@ const toggleSonido = () => {
     <img class="icono-sonido"
         :src="sonidoDesactivado ? '/src/components/Media/Imagenes/musicOff.png' : '/src/components/Media/Imagenes/musicOn.jpg'"
         alt="Icono Sonido" @click="toggleSonido" />
+    <!-- <h4>Turno J1= {{ esMiTurno }}</h4> -->
 
     <button type="button" class="btn btn-danger" @click="comienzaJuego" v-if="!mostrarComponentes">Comenzar!</button>
     <hr>
@@ -210,4 +215,13 @@ const toggleSonido = () => {
     z-index: 1000;
     border-radius: 5px;
 }
+
+.empezar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+
 </style>
