@@ -90,7 +90,7 @@ const reproducirSonido2 = () => {
 <style scoped>
 .card{
   border: 20px ridge #462d72;
-  width: 27rem;
+  width: 30rem;
   color: black;
 }
 .card-title{
