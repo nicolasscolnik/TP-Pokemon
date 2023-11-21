@@ -117,16 +117,16 @@ const enviarPokemonALaArena2 = (pokemon, maestro) => {
         const indice = jugador2.value.pokemons.indexOf(pokeAAsignar);
         if (indice !== -1) {
             jugador2.value.pokemons.splice(indice, 1);
-            if (jugador2.value.pokemons.length != 3) { 
+            if (jugador2.value.pokemons.length != 3) {
                 jugador2.value.pokemons.push(pokemonEnArena2.value);
             }
-            pokemonEnArena2.value = pokeAAsignar; 
+            pokemonEnArena2.value = pokeAAsignar;
         }
     } else {
 
         const indice = jugador1.value.pokemons.indexOf(pokeAAsignar);
         if (indice !== -1) {
-            jugador1.value.pokemons.splice(indice, 1); 
+            jugador1.value.pokemons.splice(indice, 1);
             if (jugador1.value.pokemons.length != 3) {
                 jugador1.value.pokemons.push(pokemonEnArena1.value);
             }
@@ -149,7 +149,6 @@ const toggleSonido = () => {
 </script>
 
 <template>
-
     <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
         src="/src/components/Media/Audio/Battle (Vs. Wild Pokémon).mp3"></audio>
 
@@ -167,13 +166,13 @@ const toggleSonido = () => {
 
     <hr>
     <div class="luchadores-container" v-if="mostrarComponentes">
-        <MaestroPokemon v-if="jugador1" @horadeluchar="enviarPokemonALaArena2($event, 1)" @lastimar="atacar(1)"
-            @curar="curar(1)" :pokemons="pokemones1" :tuTurno="esMiTurno" :pokemonEnArena="pokemonEnArena1"
-            :numeroJugador="1" :botonera="true">
+        <MaestroPokemon v-if="jugador1" :nombre="jugador1.nombre" @horadeluchar="enviarPokemonALaArena2($event, 1)"
+            @lastimar="atacar(1)" @curar="curar(1)" :pokemons="pokemones1" :tuTurno="esMiTurno"
+            :pokemonEnArena="pokemonEnArena1" :numeroJugador="1" :botonera="true">
             Luchador 1</MaestroPokemon>
-        <MaestroPokemon v-if="jugador2" @horadeluchar="enviarPokemonALaArena2($event, 2)" @lastimar="atacar(2)"
-            @curar="curar(2)" :pokemons="pokemones2" :tuTurno="!esMiTurno" :pokemonEnArena="pokemonEnArena2"
-            :numeroJugador="2">
+        <MaestroPokemon v-if="jugador2" :nombre="jugador2.nombre" @horadeluchar="enviarPokemonALaArena2($event, 2)"
+            @lastimar="atacar(2)" @curar="curar(2)" :pokemons="pokemones2" :tuTurno="!esMiTurno"
+            :pokemonEnArena="pokemonEnArena2" :numeroJugador="2">
             Luchador 2</MaestroPokemon>
     </div>
 </template>
@@ -216,6 +215,4 @@ const toggleSonido = () => {
     align-items: center;
     margin-top: 100px;
 }
-
-
 </style>
