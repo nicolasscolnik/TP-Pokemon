@@ -22,31 +22,27 @@ let datosSala = ref({})
 const storeMaestro = useStoreMaestroPokemon();
 const storeArena = useStoreArena();
 
-//SOCKET.IO
+const turnoIA = () => {
+    if (!esMiTurno.value) {
+        setTimeout(() => {
+            const numRand = generarNumeroAleatorioIA();
+            if (numRand === 1) {
+                atacar(2);
+            } else {
+                curar(2);
+            }
+        }, 0);
+    }
+};
 
 
-// const socket = io('http://localhost:8080');
-// const messages = ref([]);
-// const message = ref('');
-// const storeArenaIO = ref(storeArena)
+const generarNumeroAleatorioIA = () => {
+    const numeroDecimal = Math.random();
+    const numeroRedondeado = Math.round(numeroDecimal);
+    const resultado = numeroRedondeado + 1;
 
-// const sendMessage = () => {
-//     if (message.value) {
-//         socket.emit('message', message.value);
-//         message.value = '';
-//     }
-// };
-
-// const sendStoreArenaIO = () => {
-//     socket.emit('storeArena', storeArena);
-//     console.log(storeArena)
-//     // if (storeArenaIO.value) {
-//     //     socket.emit('storeArena', storeArenaIO.value);
-//     // }
-// };
-
-//TERMINA SOCKET.IO
-
+    return resultado;
+}
 
 const cambiaTurno = () => {
     esMiTurno.value = !esMiTurno.value;
@@ -58,38 +54,40 @@ const cambiaTurno = () => {
 
 const atacar = (id) => {
     if (id == 1) {
-        jugador2.value.pokemonEnArena.vida -= jugador1.value.pokemonEnArena.ataque;
+        pokemonEnArena2.value.vida -= pokemonEnArena1.value.ataque;
     } else {
-        jugador1.value.pokemonEnArena.vida -= jugador2.value.pokemonEnArena.ataque;
+        pokemonEnArena1.value.vida -= pokemonEnArena2.value.ataque;
     }
     if (checkGanador()) {
         //Proponer buscar nuevo oponente, mandar a componente busquedaArena y reiniciar propiedades
         console.log("Hay ganador")
     }
     cambiaTurno();
-
+    turnoIA();
 }
 
 const checkGanador = () => {
-    if (pokemonEnArena2.value.vida <= 0) {
-        let pokeActual = pokemonEnArena2.value;
-        alert(pokemonEnArena2.value.nombre + ' IS KAPUTTTT!!!!');
+    if (jugador2.value.pokemonEnArena.vida <= 0) {
+        debugger
+        let pokeActual = jugador2.value.pokemonEnArena.vida;
+        alert(jugador2.value.pokemonEnArena.nombre + ' IS KAPUTTTT!!!!');
         //sacar pokemon en arena del array
-        if (pokemones2.value.length > 0) {
-            enviarPokemonALaArena2(pokemones2.value[0], 2);
-            pokemones2.value.pop(pokeActual);
+        if (jugador2.value.pokemons.length > 0) {
+            enviarPokemonALaArena2(jugador2.value.pokemons[0], 2);
+            jugador2.value.pokemons.value.pop(pokeActual);
         } else {
             alert('Acabo el juego SOQUETES!');
             return true;
         }
 
-    } else if (pokemonEnArena1.value.vida <= 0) {
-        let pokeActual = pokemonEnArena1.value;
-        alert(pokemonEnArena1.value.nombre + ' IS KAPUTTTT!!!!');
-        pokemonEnArena1 = ref();
-        if (pokemones1.value.length > 0) {
-            enviarPokemonALaArena2(pokemones1.value[0], 1);
-            pokemones1.value.pop(pokeActual);
+    } else if (jugador1.value.pokemonEnArena.vida <= 0) {
+        debugger
+        let pokeActual = jugador1.value.pokemonEnArena.vida;
+        alert(jugador1.value.pokemonEnArena.nombre + ' IS KAPUTTTT!!!!');
+        //sacar pokemon en arena del array
+        if (jugador1.value.pokemons.length > 0) {
+            enviarPokemonALaArena2(jugador1.value.pokemons[0], 1);
+            jugador1.value.pokemons.value.pop(pokeActual);
         } else {
             alert('Acabo el juego SOQUETES!');
             return true;
@@ -107,9 +105,8 @@ const curar = (id) => {
         jugador1.value.pokemonEnArena.vida += jugador1.value.pokemonEnArena.defensa;
     }
     cambiaTurno();
+    turnoIA();
 }
-
-
 
 const Actualizar = () => {
     let jugador1Local = datosPeleaActuales.value.luchador1;
@@ -186,10 +183,9 @@ const toggleSonido = () => {
 </script>
 
 <template>
-    <div>{{ pokemones1 }}</div>
+    <div>{{ pokemonEnArena1 }}</div>
     <br>-----------
-    <div> {{ jugador2 }}</div>
-    <div>{{ mostrarComponentes }}</div>
+    <div> {{ pokemonEnArena2 }}</div>   
 
     <audio class="audio" :autoplay="!sonidoDesactivado" loop :muted="sonidoDesactivado"
         src="/src/components/Media/Audio/Battle (Vs. Wild Pokémon).mp3"></audio>
@@ -211,7 +207,7 @@ const toggleSonido = () => {
     <div class="luchadores-container" v-if="mostrarComponentes">
         <MaestroPokemon v-if="jugador1" @horadeluchar="enviarPokemonALaArena2($event, 1)" @lastimar="atacar(1)"
             @curar="curar(1)" :pokemons="pokemones1" :tuTurno="esMiTurno" :pokemonEnArena="pokemonEnArena1"
-            :numeroJugador="1">
+            :numeroJugador="1" :botonera="true">
             Luchador 1</MaestroPokemon>
         <MaestroPokemon v-if="jugador2" @horadeluchar="enviarPokemonALaArena2($event, 2)" @lastimar="atacar(2)"
             @curar="curar(2)" :pokemons="pokemones2" :tuTurno="!esMiTurno" :pokemonEnArena="pokemonEnArena2"

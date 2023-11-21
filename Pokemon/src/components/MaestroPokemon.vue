@@ -10,7 +10,8 @@ const maestroPokemon = defineProps({
   tuTurno: ref(true),
   pokemons: ref([]),
   pokemonEnArena: ref({}),
-  numeroJugador: ref(0)
+  numeroJugador: ref(0),
+  botonera :ref(true)
 })
 
 const emit = defineEmits();
@@ -53,7 +54,7 @@ const reproducirSonido2 = () => {
       <div class="panel-acciones">
         <label class="aviso-turno" v-if="tuTurno">
           <h6>Tu turno: PELEA!!!</h6>
-          <div class="container">
+          <div class="container" v-if="botonera">
             <button class="btn btn-danger"  @click="() => { emitLastimar(); reproducirSonido1(); }">Ataca!</button>
             <div class="espacio"> <img src="/src/components/Media/Imagenes/pokebola.png" alt=""></div> <!-- Espacio entre los botones -->
             <button class="btn btn-success" @click="() => { emitCurar(); reproducirSonido2(); }">Curate!</button>
@@ -74,7 +75,7 @@ const reproducirSonido2 = () => {
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.vida }}</td>
                 <td>
-                  <button class="btn btn-dark" @click="mandarArena(item)" v-if="tuTurno">Elegir</button>
+                  <button class="btn btn-dark" @click="mandarArena(item)" v-if="tuTurno && botonera">Elegir</button>
                 </td>
               </tr>
             </tbody>
