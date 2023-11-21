@@ -6,12 +6,6 @@ import { useStoreArena } from '../../stores/storeArena';
 const storeMaestro = useStoreMaestroPokemon();
 const storeArena = useStoreArena();
 
-//crear metodo que busque si hay sala libre y la retorne o retorne una sala conmigo como jug1
-//actualizar atributos: storeArena.url con la url de la sala // jug1(el otro o yo) y jug2 (yo o null)
-//creacion de socketio
-
-
-
 const buscarArena = async () => {
   try {
     debugger
@@ -22,22 +16,16 @@ const buscarArena = async () => {
     });
 
     if (response.ok) {
-      // Si la respuesta es exitosa, procede con el manejo de la respuesta
       const responseBody = await response.text();
 
-      // Verifica si el cuerpo de la respuesta está vacío
       if (responseBody.trim() === "") {
-        // La sala es null, crea una nueva sala
         await crearNuevaSala();
       } else {
-        // Intenta analizar el cuerpo de la respuesta como JSON
         const salaLibre = JSON.parse(responseBody);
         console.log("ID sala libre: " + salaLibre.id);
-        // Asigna al atributo idUser2 de la sala existente
         await asignarUsuarioASalaExistente(salaLibre.id);
       }
     } else {
-      // La respuesta no fue exitosa (código de estado no está en el rango 200-299)
       console.error("Error al buscar sala:", response.statusText);
     }
   } catch (error) {
@@ -53,7 +41,6 @@ const crearNuevaSala = async () => {
       body: JSON.stringify({ idUser1: storeMaestro.nombre }),
     });
     const nuevaSala = await nuevaSalaResponse.json();
-    // Espera hasta que idUser2 esté asignado y redirige a ArenaDeBatalla
     await esperarSalaCompleta(nuevaSala.id);
   } catch (error) {
     console.error("Error al crear nueva sala:", error);
@@ -67,17 +54,12 @@ const asignarUsuarioASalaExistente = async (salaId) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idUser2: storeMaestro.nombre }),
     });
-    // Redirige a ArenaDeBatalla con la información necesaria
-    // Puedes usar this.$router.push o la forma que prefieras para redirigir
   } catch (error) {
     console.error("Error al asignar usuario a sala existente:", error);
   }
 };
 
 const esperarSalaCompleta = async (salaId) => {
-  // Puedes implementar aquí la lógica para esperar hasta que idUser2 esté asignado
-  // y luego redirigir a ArenaDeBatalla
-  console.log("hasta la 104OK");
 };
 
 const waitForNombre = () => new Promise(resolve => {
@@ -132,9 +114,6 @@ const toggleSonido = () => {
     </div>
   </div>
 
-
-  <!-- <div>{{ storeMaestro }}</div>
-<div>{{ storeArena }}</div> -->
 </template>
 
 <style>

@@ -4,7 +4,6 @@ import { useStoreMaestroPokemon } from '/stores/storeMaestroPokemon'
 
 const storeMaestro = useStoreMaestroPokemon();
 
-// Esto sera usado como plantilla en ArenaDeBatalla
 const maestroPokemon = defineProps({
   nombre: ref(""),
   tuTurno: ref(true),
